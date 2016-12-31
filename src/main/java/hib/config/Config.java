@@ -27,10 +27,10 @@ import java.util.Properties;
 public class Config {
 
     @Value("${jpa.dialect}")
-    private String dialect;
+    String dialect;
 
     @Value("${jpa.showsql}")
-    private String showSql;
+    String showSql;
 
     @Autowired
     DataSource datasource;
