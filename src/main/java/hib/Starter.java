@@ -27,6 +27,7 @@ public class Starter {
         Stock stock = new Stock("7668", "APPL");
 //        stockBo.save(stock);
         Stock stock1 = stockBo.findByStockCode("7668");
+        System.out.println(stock1);
         System.out.println("Done...");
     }
 }
