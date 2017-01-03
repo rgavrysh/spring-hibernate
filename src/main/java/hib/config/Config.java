@@ -23,7 +23,7 @@ import java.util.Properties;
         "hib.bo",
         "hib.model"
 })
-@Import({ DataSourceConfig.class})
+@Import({DataSourceConfig.class})
 public class Config {
 
     @Value("${jpa.dialect}")
