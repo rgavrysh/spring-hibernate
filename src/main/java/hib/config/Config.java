@@ -2,6 +2,8 @@ package hib.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -21,7 +24,9 @@ import java.util.Properties;
 @ComponentScan(basePackages = {
         "hib.dao",
         "hib.bo",
-        "hib.model"
+        "hib.model",
+        "hib.controllers",
+        "hib.config"
 })
 @Import({DataSourceConfig.class})
 public class Config {
@@ -85,6 +90,12 @@ public class Config {
 //    }
 
     @Bean
+    DispatcherServlet dispatcherServlet() {
+        DispatcherServlet dispatcherServlet = new DispatcherServlet();
+        return dispatcherServlet;
+    }
+
+    @Bean
     JpaTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager txManager = new JpaTransactionManager();
         JpaDialect jpaDialect = new HibernateJpaDialect();
@@ -94,8 +105,15 @@ public class Config {
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
+    }
+
+    @Bean
+    public EmbeddedServletContainerFactory servletContainer() {
+        TomcatEmbeddedServletContainerFactory factory =
+                new TomcatEmbeddedServletContainerFactory();
+        return factory;
     }
 
 //    @Bean

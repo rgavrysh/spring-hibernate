@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 public class StockController {
 
     @RequestMapping(value = "/greeting", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<String> greeting(@RequestParam(value = "name", defaultValue = "World") String name){
+    public
+    @ResponseBody
+    ResponseEntity<String> greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
         return ResponseEntity.status(HttpStatus.OK).body(String.format("Hello, %s!", name));
     }
 }
