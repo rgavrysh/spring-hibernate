@@ -19,16 +19,5 @@ public class Starter {
 
     public static void main(String[] args) {
         SpringApplication.run(Starter.class, args);
-//        ApplicationContext applicationContext =
-////                new ClassPathXmlApplicationContext("config/BeanLocations.xml");
-//                new AnnotationConfigApplicationContext(Starter.class);
-//
-//        StockBo stockBo = (StockBo) applicationContext.getBean("stockBo");
-//
-//        Stock stock = new Stock("7668", "APPL");
-////        stockBo.save(stock);
-//        Stock stock1 = stockBo.findByStockCode("7668");
-//        System.out.println(stock1);
-//        System.out.println("Done...");
     }
 }
