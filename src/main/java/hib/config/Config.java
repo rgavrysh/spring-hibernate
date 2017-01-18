@@ -113,6 +113,7 @@ public class Config {
     public EmbeddedServletContainerFactory servletContainer() {
         TomcatEmbeddedServletContainerFactory factory =
                 new TomcatEmbeddedServletContainerFactory();
+        factory.setPort(Integer.parseInt(System.getProperty("server.port")));
         return factory;
     }
 

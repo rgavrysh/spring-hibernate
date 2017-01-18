@@ -13,6 +13,11 @@ public class StockController {
     @Autowired
     StockBo stockBo;
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity<String> mainPage() {
+        return ResponseEntity.status(HttpStatus.OK).body("Hello, World!");
+    }
+
     @RequestMapping(value = "/greeting", method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<String> greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
         return ResponseEntity.status(HttpStatus.OK).body(String.format("Hello, %s!", name));
