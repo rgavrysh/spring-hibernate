@@ -1,10 +1,10 @@
 package hib.controllers;
 
 import hib.bo.StockBo;
+import hib.model.Response;
 import hib.model.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,13 +14,13 @@ public class StockController {
     StockBo stockBo;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<String> mainPage() {
-        return ResponseEntity.status(HttpStatus.OK).body("Hello, World!");
+    public Response mainPage() {
+        return new Response("OK", String.valueOf(HttpStatus.OK), "Hello World!");
     }
 
     @RequestMapping(value = "/greeting", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<String> greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return ResponseEntity.status(HttpStatus.OK).body(String.format("Hello, %s!", name));
+    public @ResponseBody Response greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
+        return new Response("OK", String.valueOf(HttpStatus.OK), String.format("Hello, %s!", name));
     }
 
     @RequestMapping(value = "/stock", method = RequestMethod.GET)
