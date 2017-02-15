@@ -65,7 +65,7 @@ public class BookingDaoImpl implements BookingDao {
     public List<Booking> findAllByTimeRange(final Booking booking) {
         logger.debug("Find all bookings for venue id: " + booking.getVenue().getId() + ", and time range from: " +
                 booking.getStartDateTime() + " to: " + booking.getEndDateTime());
-        Query query = entityManager.createNativeQuery("select count(*) from booking b where b.venue_id=?" +
+        Query query = entityManager.createNativeQuery("select * from booking b where b.venue_id=?" +
                 " and (b.end_date_time>? and start_date_time<?)");
         query.setParameter(1, booking.getVenue().getId());
         query.setParameter(2, booking.getStartDateTime());
