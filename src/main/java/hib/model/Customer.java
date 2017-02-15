@@ -16,7 +16,9 @@ public class Customer implements Serializable {
     private Integer phone;
     private String email;
 
-    protected Customer(){}
+    protected Customer() {
+    }
+
     public Customer(String name, Integer phone, String email) {
         this.name = name;
         this.phone = phone;

@@ -27,7 +27,9 @@ public class Address implements Serializable {
     @NotNull
     private Integer postalCode;
 
-    protected Address(){}
+    protected Address() {
+    }
+
     public Address(String city, String street, Integer buildingNumber, Integer postalCode) {
         this.city = city;
         this.street = street;

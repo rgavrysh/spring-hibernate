@@ -29,7 +29,9 @@ public class Booking implements Serializable {
     @Column(name = "end_date_time")
     private Date endDateTime;
 
-    protected Booking(){}
+    protected Booking() {
+    }
+
     public Booking(Venue venue, Customer customer, Date startDateTime, Date endDateTime) {
         this.venue = venue;
         this.customer = customer;
@@ -53,16 +55,16 @@ public class Booking implements Serializable {
         this.customer = customer;
     }
 
-    public String getStartDateTime() {
-        return startDateTime.toString();
+    public Date getStartDateTime() {
+        return startDateTime;
     }
 
     public void setStartDateTime(Date startDateTime) {
         this.startDateTime = startDateTime;
     }
 
-    public String getEndDateTime() {
-        return endDateTime.toString();
+    public Date getEndDateTime() {
+        return endDateTime;
     }
 
     public void setEndDateTime(Date endDateTime) {

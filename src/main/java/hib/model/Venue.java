@@ -29,7 +29,9 @@ public class Venue implements Serializable {
     @Column(name = "end_work")
     private Time endWorkTime;
 
-    protected Venue(){}
+    protected Venue() {
+    }
+
     public Venue(String name, Integer phone, Address address, Time startWorkTime, Time endWorkTime) {
         this.name = name;
         this.phone = phone;
