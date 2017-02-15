@@ -2,12 +2,13 @@ package hib.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
 @Table(name = "booking")
 public class Booking implements Serializable {
-
+    private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private static final long serialVersionUID = -3965610784506338772L;
 
     @Id
@@ -35,8 +36,16 @@ public class Booking implements Serializable {
     public Booking(Venue venue, Customer customer, Date startDateTime, Date endDateTime) {
         this.venue = venue;
         this.customer = customer;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        if (timeFormat.format(startDateTime).compareTo(timeFormat.format(venue.getStartWorkTime())) >= 0) {
+            this.startDateTime = startDateTime;
+        } else {
+            throw new IllegalArgumentException("Opening time is later than booking time.");
+        }
+        if (timeFormat.format(endDateTime).compareTo(timeFormat.format(venue.getEndWorkTime())) < 0) {
+            this.endDateTime = endDateTime;
+        } else {
+            throw new IllegalArgumentException("Closing time is earlier than booking time.");
+        }
     }
 
     public Venue getVenue() {

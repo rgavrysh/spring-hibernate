@@ -26,29 +26,45 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Some problem in a server happened!") //409
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public Response handleConflict() {
+    public
+    @ResponseBody
+    Response handleConflict() {
         return new Response("Conflict", String.valueOf(HttpStatus.CONFLICT),
                 "Conflict in a server happened!");
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ParseException.class)
-    public Response handleJsonParseException(Exception e) {
+    public
+    @ResponseBody
+    Response handleJsonParseException(Exception e) {
         return new Response("Bad request body", String.valueOf(HttpStatus.BAD_REQUEST),
                 "Can not parse request body data. \n" + e.getLocalizedMessage());
     }
 
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ExceptionHandler(MissingPathVariableException.class)
-    public Response handlePathVariableException(Exception e) {
+    public
+    @ResponseBody
+    Response handlePathVariableException(Exception e) {
         return new Response("Invalid Path Variable", String.valueOf(HttpStatus.NOT_ACCEPTABLE),
                 e.getLocalizedMessage());
     }
 
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public
+    @ResponseBody
+    Response handleArgumentException(Exception e) {
+        return new Response("Illegal argument", String.valueOf(HttpStatus.NOT_ACCEPTABLE),
+                e.getLocalizedMessage());
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({ConstraintViolationException.class, IllegalArgumentException.class,
-            HttpMediaTypeNotSupportedException.class})
-    public Response dataNotFound(Exception e) {
+    @ExceptionHandler({ConstraintViolationException.class, HttpMediaTypeNotSupportedException.class})
+    public
+    @ResponseBody
+    Response dataNotFound(Exception e) {
         return new Response("Bad request", String.valueOf(HttpStatus.BAD_REQUEST),
                 "Constraint violation of request data. \n" + e.getLocalizedMessage());
     }
