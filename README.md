@@ -1,4 +1,5 @@
-https://travis-ci.org/rgavrysh/spring-hibernate.svg?branch=master
+### Status
+[![Build Status](https://travis-ci.org/rgavrysh/spring-hibernate.png?branch=master)](https://travis-ci.org/rgavrysh/spring-hibernate)
 # spring-hibernate
 This is training project.
 
