@@ -1,5 +1,7 @@
 package hib.model;
 
+import hib.restEntity.CreateAddress;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -28,6 +30,13 @@ public class Address implements Serializable {
     private Integer postalCode;
 
     protected Address() {
+    }
+
+    public Address(CreateAddress createAddress) {
+        this.city = createAddress.getCity();
+        this.street = createAddress.getStreet();
+        this.buildingNumber = createAddress.getBuildingNumber();
+        this.postalCode = createAddress.getPostalCode();
     }
 
     public Address(String city, String street, Integer buildingNumber, Integer postalCode) {

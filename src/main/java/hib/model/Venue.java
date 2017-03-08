@@ -1,5 +1,8 @@
 package hib.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -21,8 +24,9 @@ public class Venue implements Serializable {
     @Column(name = "phone")
     @NotNull
     private Integer phone;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "address_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Address address;
     @Column(name = "start_work")
     private Time startWorkTime;

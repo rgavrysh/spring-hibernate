@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Repository("stockDao")
-//@Transactional
 public class StockDaoImpl extends CustomHibernateDaoSupport implements StockDao {
 
     @PersistenceContext

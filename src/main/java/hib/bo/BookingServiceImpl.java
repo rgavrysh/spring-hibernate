@@ -47,6 +47,18 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+    @Override
+    public void delete(final int id) {
+        logger.info("Service: remove booking");
+        bookingDao.delete(id);
+    }
+
+    @Override
+    public Booking findById(final int id) {
+        logger.info("Service: Find booking by id: " + id);
+        return bookingDao.findOneById(id);
+    }
+
     private boolean isTimeSlotAvailable(Booking booking) {
         logger.info("Find booking for specified time range.");
         List<Booking> bookings = bookingDao.findAllByTimeRange(booking);

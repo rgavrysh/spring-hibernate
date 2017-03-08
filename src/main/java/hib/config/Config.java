@@ -67,28 +67,6 @@ public class Config {
         return properties;
     }
 
-//    @Bean
-//    public ErrorAttributes errorAttributes() {
-//        return new DefaultErrorAttributes() {
-//
-//            @Override
-//            public Map<String, Object> getErrorAttributes(RequestAttributes requestAttributes,
-//                                                          boolean includeStackTrace) {
-//                Map<String, Object> errorAttributes = super.getErrorAttributes(requestAttributes, includeStackTrace);
-//                return errorAttributes;
-//            }
-//        };
-//    }
-
-//    @Bean
-//    public FilterRegistrationBean correlationHeaderFilter() {
-//        FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
-//        filterRegBean.setFilter(new CorrelationHeaderFilter());
-//        filterRegBean.setUrlPatterns(Arrays.asList("/*"));
-//
-//        return filterRegBean;
-//    }
-
     @Bean
     DispatcherServlet dispatcherServlet() {
         DispatcherServlet dispatcherServlet = new DispatcherServlet();

@@ -10,11 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository("bookingDao")
-@Transactional
 public class BookingDaoImpl implements BookingDao {
     private final APILogger<BookingDaoImpl> logger = new APILoggerImpl<>(this);
 
@@ -74,4 +72,14 @@ public class BookingDaoImpl implements BookingDao {
         return bookingList;
     }
 
+    @Override
+    public void delete(final int bookingId) {
+        logger.debug("DAO: remove booking");
+        Booking booking = findOneById(bookingId);
+        if (booking == null) {
+            throw new NoResultException("Booking with id: " + bookingId + " does not exist.");
+        }
+        entityManager.remove(booking);
+        entityManager.flush();
+    }
 }

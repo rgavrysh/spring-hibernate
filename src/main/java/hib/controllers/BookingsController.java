@@ -5,9 +5,11 @@ import hib.bo.VenueService;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Booking;
+import hib.model.Response;
 import hib.model.Venue;
 import hib.restEntity.BookTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,10 +35,10 @@ public class BookingsController {
         return bookings;
     }
 
-    @RequestMapping(value = "/bookings/venue/id", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/bookings/venue/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
-    List<Booking> getAllBookingsOfVenueById(@RequestParam(value = "id") final int id) {
+    List<Booking> getAllBookingsOfVenueById(@PathVariable final int id) {
         logger.info("Get all bookings for venue by id: " + id);
         Venue venue = venueService.findOneById(id);
         List<Booking> bookings = bookingService.findAllByVenue(venue);
@@ -52,5 +54,15 @@ public class BookingsController {
                 + ", end time: " + bookTime.getEndDateTime());
         Booking booking = bookingService.create(bookTime, venueId);
         return booking;
+    }
+
+    @RequestMapping(value = "/bookings/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public
+    @ResponseBody
+    Response deleteBookingById(@PathVariable final int id) {
+        logger.info("Controller: removing booking by id: " + id);
+        bookingService.delete(id);
+        return new Response("Entity deleted", String.valueOf(HttpStatus.OK),
+                "Booking has been removed");
     }
 }

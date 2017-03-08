@@ -2,6 +2,7 @@ package hib.controllers;
 
 import hib.model.Response;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MissingPathVariableException;
@@ -88,7 +89,7 @@ public class GlobalControllerExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoResultException.class)
+    @ExceptionHandler({NoResultException.class, EmptyResultDataAccessException.class})
     public
     @ResponseBody
     Response noResultException(Exception e) {

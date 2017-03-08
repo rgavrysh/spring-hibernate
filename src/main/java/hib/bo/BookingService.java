@@ -10,4 +10,8 @@ public interface BookingService {
     List<Booking> findAllByVenue(Venue venue);
 
     Booking create(final BookTime bookTime, final int venueId);
+
+    void delete(final int id);
+
+    Booking findById(final int id);
 }

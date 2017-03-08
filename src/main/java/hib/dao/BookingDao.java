@@ -15,4 +15,6 @@ public interface BookingDao {
     Booking create(final Booking booking);
 
     List<Booking> findAllByTimeRange(final Booking booking);
+
+    void delete(final int bookingId);
 }
