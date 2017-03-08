@@ -1,6 +1,8 @@
 package hib.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -22,6 +24,7 @@ public class Role implements Serializable {//implements GrantedAuthority {
     private String grants;
 
     @OneToMany(mappedBy = "roleId")
+    @JsonIgnore
     private Collection<UserToRole> userToRoles = new HashSet<>();
 
     public Role() {
