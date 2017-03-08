@@ -1,3 +1,4 @@
+https://travis-ci.org/rgavrysh/spring-hibernate.svg?branch=master
 # spring-hibernate
 This is training project.
 
