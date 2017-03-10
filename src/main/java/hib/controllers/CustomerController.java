@@ -7,6 +7,7 @@ import hib.model.Customer;
 import hib.restEntity.CreateCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,14 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    @RequestMapping(value = "/me", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public
+    @ResponseBody
+    Customer getMe(@AuthenticationPrincipal Customer me) {
+        logger.info(me.toString());
+        return me;
+    }
 
     @RequestMapping(value = "/customer/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public

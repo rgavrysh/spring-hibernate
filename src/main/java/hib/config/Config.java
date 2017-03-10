@@ -28,7 +28,7 @@ import java.util.Properties;
         "hib.controllers",
         "hib.config"
 })
-@Import({DataSourceConfig.class})
+@Import({DataSourceConfig.class, OAuth2Config.class})
 public class Config {
 
     @Value("${jpa.dialect}")

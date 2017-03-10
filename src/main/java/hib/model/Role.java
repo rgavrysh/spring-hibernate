@@ -1,6 +1,9 @@
 package hib.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -9,7 +12,7 @@ import java.util.HashSet;
 
 @Entity
 @Table(name = "role")
-public class Role implements Serializable {//implements GrantedAuthority {
+public class Role implements Serializable, GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,7 +24,8 @@ public class Role implements Serializable {//implements GrantedAuthority {
     private String name;
     private String grants;
 
-    @OneToMany(mappedBy = "roleId")
+    @OneToMany(mappedBy = "roleId", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Collection<UserToRole> userToRoles = new HashSet<>();
 
     public Role() {
@@ -39,7 +43,7 @@ public class Role implements Serializable {//implements GrantedAuthority {
         return userToRoles;
     }
 
-    //    @Override
+    @Override
     public String getAuthority() {
         return name;
     }

@@ -23,6 +23,14 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
+    public Customer findByLogin(String login) {
+        Query query = entityManager.createNativeQuery("select * from customer where name=?", Customer.class);
+        query.setParameter(1, login);
+        Customer customer = (Customer) query.getSingleResult();
+        return customer;
+    }
+
+    @Override
     public Customer create(final Customer customer) {
         logger.debug("DAO: add new customer");
         entityManager.persist(customer);

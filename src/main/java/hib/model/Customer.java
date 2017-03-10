@@ -1,5 +1,6 @@
 package hib.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hib.restEntity.CreateCustomer;
 import org.hibernate.validator.constraints.Email;
 
@@ -22,7 +23,8 @@ public class Customer implements Serializable {
     private Integer phone;
     @Email
     private String email;
-    @OneToMany(mappedBy = "customerId")
+    @OneToMany(mappedBy = "customerId", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<UserToRole> userToRoles = new HashSet<>();
 
     protected Customer() {
@@ -38,6 +40,13 @@ public class Customer implements Serializable {
         this.name = name;
         this.phone = phone;
         this.email = email;
+    }
+
+    public Customer(Customer user){
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.phone = user.getPhone();
+        this.userToRoles = user.getUserToRoles();
     }
 
 
