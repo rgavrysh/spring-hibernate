@@ -17,7 +17,7 @@ public class BookTime {
 
     public BookTime(@JsonProperty(value = "start_date_time", required = true) String startTime,
                     @JsonProperty(value = "end_date_time", required = true) String endTime,
-                    @JsonProperty(value = "customer_id", required = true) Integer customerId) throws ParseException {
+                    @JsonProperty(value = "customer_id", required = false) Integer customerId) throws ParseException {
         this.startDateTime = dateFormat.parse(startTime);
         this.endDateTime = dateFormat.parse(endTime);
         this.customerId = customerId;
@@ -33,5 +33,9 @@ public class BookTime {
 
     public Integer getCustomerId() {
         return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 }

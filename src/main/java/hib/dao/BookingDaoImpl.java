@@ -5,6 +5,7 @@ import hib.logging.APILoggerImpl;
 import hib.model.Booking;
 import hib.model.Venue;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -13,6 +14,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository("bookingDao")
+@Transactional
 public class BookingDaoImpl implements BookingDao {
     private final APILogger<BookingDaoImpl> logger = new APILoggerImpl<>(this);
 
@@ -37,6 +39,16 @@ public class BookingDaoImpl implements BookingDao {
         List<Booking> bookings;
         Query query = entityManager.createNativeQuery("select * from booking b where b.venue_id=?", Booking.class);
         query.setParameter(1, venue.getId());
+        bookings = query.getResultList();
+        return bookings;
+    }
+
+    public List<Booking> findAllByVenueAndCustomer(int venueId, int customerId) {
+        logger.debug("Find all bookings by venueId and customerId");
+        List<Booking> bookings;
+        Query query = entityManager.createNativeQuery("select * from booking b where b.venue_id=? and b.customer_id=?", Booking.class);
+        query.setParameter(1, venueId);
+        query.setParameter(2, customerId);
         bookings = query.getResultList();
         return bookings;
     }

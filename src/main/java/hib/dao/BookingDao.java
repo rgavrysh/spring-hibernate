@@ -10,6 +10,8 @@ public interface BookingDao {
 
     List<Booking> findAllByVenue(Venue venue);
 
+    List<Booking> findAllByVenueAndCustomer(final int venueId, final int customerId);
+
     Booking findOneById(final int bookingId);
 
     Booking create(final Booking booking);

@@ -5,12 +5,14 @@ import hib.bo.VenueService;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Booking;
+import hib.model.Customer;
 import hib.model.Response;
 import hib.model.Venue;
 import hib.restEntity.BookTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +37,15 @@ public class BookingsController {
         return bookings;
     }
 
+    @RequestMapping(value = "/me/bookings/venue/{venueId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public
+    @ResponseBody
+    List<Booking> getBookingsOfVenueByUser(@AuthenticationPrincipal Customer customer, @PathVariable final int venueId) {
+        logger.info("Get booking of venue requested by user " + customer.getName());
+        List<Booking> bookings = bookingService.findAllByVenueAndCustomer(venueId, customer.getId());
+        return bookings;
+    }
+
     @RequestMapping(value = "/bookings/venue/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
@@ -49,9 +60,12 @@ public class BookingsController {
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
-    Booking bookTimeOnVenue(@PathVariable final int venueId, @RequestBody(required = true) BookTime bookTime) {
+    Booking bookTimeOnVenue(@AuthenticationPrincipal final Customer customer,
+                            @PathVariable final int venueId,
+                            @RequestBody(required = true) BookTime bookTime) {
         logger.info("Book time for venue with id: " + venueId + "; start time: " + bookTime.getStartDateTime()
                 + ", end time: " + bookTime.getEndDateTime());
+        bookTime.setCustomerId(customer.getId());
         Booking booking = bookingService.create(bookTime, venueId);
         return booking;
     }

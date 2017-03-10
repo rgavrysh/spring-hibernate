@@ -9,6 +9,8 @@ import java.util.List;
 public interface BookingService {
     List<Booking> findAllByVenue(Venue venue);
 
+    List<Booking> findAllByVenueAndCustomer(final int venueId, final int customerId);
+
     Booking create(final BookTime bookTime, final int venueId);
 
     void delete(final int id);

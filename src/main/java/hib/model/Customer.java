@@ -23,6 +23,9 @@ public class Customer implements Serializable {
     private Integer phone;
     @Email
     private String email;
+    @NotNull
+    @JsonIgnore
+    private String password;
     @OneToMany(mappedBy = "customerId", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<UserToRole> userToRoles = new HashSet<>();
@@ -42,11 +45,13 @@ public class Customer implements Serializable {
         this.email = email;
     }
 
-    public Customer(Customer user){
+    public Customer(Customer user) {
+        this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
         this.phone = user.getPhone();
         this.userToRoles = user.getUserToRoles();
+        this.password = user.getPassword();
     }
 
 
@@ -89,5 +94,13 @@ public class Customer implements Serializable {
 
     public void setUserToRoles(Set<UserToRole> userToRoles) {
         this.userToRoles = userToRoles;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

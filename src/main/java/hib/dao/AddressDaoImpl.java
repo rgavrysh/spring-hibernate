@@ -4,13 +4,14 @@ import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Address;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Repository("addressDao")
-//@Transactional
+@Transactional
 public class AddressDaoImpl implements AddressDao {
     private final APILogger<AddressDaoImpl> logger = new APILoggerImpl<>(this);
 

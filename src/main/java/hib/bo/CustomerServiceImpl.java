@@ -41,14 +41,14 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Customer user = customerDao.findByLogin(login);
-        if(user == null)
+        if (user == null)
             throw new UsernameNotFoundException(String.format("User %s does not exist", login));
         return new CustomerDetails(user);
     }
 
     private final static class CustomerDetails extends Customer implements UserDetails {
 
-        private CustomerDetails(Customer customer){
+        private CustomerDetails(Customer customer) {
             super(customer);
         }
 
@@ -59,11 +59,6 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
                 roles.add(role.getRoleId());
             }
             return roles;
-        }
-
-        @Override
-        public String getPassword() {
-            return "****";
         }
 
         @Override
