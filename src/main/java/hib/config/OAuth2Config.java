@@ -27,6 +27,7 @@ public class OAuth2Config {
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+
             endpoints.authenticationManager(authenticationManager);
         }
 
