@@ -1,7 +1,19 @@
-<div ng-controller ="navigation as nav" class="login-form" class="container">
-    <h1>Login</h1>
-    <label>Username</label><input name="username" ng-model="nav.data.username"/>
-    <label>Password</label><input type="password" name="password" ng-model="nav.data.password"/>
-    <a href="#" ng-click="nav.login()">Login</a>
-    <br>
-</div>
+<div ng-controller="navigation as nav" class="container">
+
+    <form class="form-signin col-lg-4 col-md-offset-4">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="username" class="sr-only">Login</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="User Login" ng-model="nav.data.username"
+               required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+               ng-model="nav.data.password" required>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="nav.login()">Sign in</button>
+    </form>
+
+</div> <!-- /container -->
