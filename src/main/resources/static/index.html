@@ -18,7 +18,9 @@
             <li ng-show="!authenticated" ng-class="{active:nav.tab('navigation')}">
                 <a href="#/login">login</a>
             </li>
-            <li ng-show="authenticated"><a href="" ng-click="nav.logout()">logout</a></li>
+            <li ng-controller="home as home" ng-show="authenticated">
+                <a href="" ng-click="home.logout()">logout</a>
+            </li>
         </ul>
 
     </div>
