@@ -14,6 +14,8 @@ Application connects to PostgreSQL database in Heroku and do simple transactions
   ```
   password for user 'Volodymyr' is: 1111
 
+  password for admin-user 'Roman' is: qwe123
+
  2) You get response like:
   ```shell
   {"access_token":"4feb1c5d-7471-4b02-91b3-cc4ba7eace8e","token_type":"bearer","refresh_token":"ed659793-5b63-49fa-8d14-86ff4854b537","expires_in":43199,"scope":"read trust"}
