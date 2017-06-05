@@ -21,6 +21,10 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
     .controller('about', function($scope, $rootScope, $http, $cookies){
         var self = this;
 
+        $rootScope.$on('getUserInfo', function(){
+            self.me();
+        })
+
         var isLoginPage = window.location.href.indexOf("login") != -1;
                 if(isLoginPage){
                     if($cookies.get("access_token")){
@@ -31,8 +35,6 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
                         $http.defaults.headers.common.Authorization =
                           'Bearer ' + $cookies.get("access_token");
                     } else{
-
-        //                window.location.href = "login";
                     }
                 }
 
@@ -46,9 +48,26 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
                 console.log('received data ...');
                 console.log(response);
                 self.customer = response.data;
+                for (var i = 0; i < self.customer.authorities.length; i++){
+                	if(self.customer.authorities[i].authority.includes('ADMIN')){
+                		$rootScope.admin = true;
+                		console.log('admin role');
+                    }
+                }
+                $rootScope.username = self.customer.name;
             })
         }
         self.me();
+
+        self.getUsersData = function getUsers() {
+        $http.get('/customers').then(function(response){
+            console.log('get all users ...');
+            console.log(response);
+            self.users = response.data;
+        })
+        }
+
+        self.getUsersData();
     })
     .controller('home', function($scope, $rootScope, $http, $cookies, $location){
         console.log('home controller 1 ...');
@@ -65,8 +84,6 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
                 $http.defaults.headers.common.Authorization =
                   'Bearer ' + $cookies.get("access_token");
             } else{
-
-//                window.location.href = "login";
             }
         }
 
@@ -127,29 +144,28 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
         self.login = function(){
             getToken(self.data);
             $rootScope.authenticated = true;
+            $rootScope.$emit('getUserInfo', {});
         }
 
         function getToken(data){
         console.log('updated data');
         console.log(data);
         req = {
-                            method: 'POST',
-                            url: "http://localhost:8080/oauth/token",
-                            headers: {
-                                "Authorization": "Basic cmVzdDpxd2UxMjM=",
-                                "Content-type": "application/x-www-form-urlencoded; charset=utf-8"
-                            },
-                            data: $httpParamSerializer(self.data)
-                        }
+            method: 'POST',
+            url: "http://localhost:8080/oauth/token",
+            headers: {
+                "Authorization": "Basic cmVzdDpxd2UxMjM=",
+                "Content-type": "application/x-www-form-urlencoded; charset=utf-8"},
+            data: $httpParamSerializer(self.data)
+            }
         console.log(req);
-            $http(req).then(function(data){
-                                           console.log('Response data after POST ...');
-                                           console.log(data);
-                                           $http.defaults.headers.common.Authorization =
-                                               'Bearer ' + data.data.access_token;
-                                           $cookies.put("access_token", data.data.access_token);
-
-                                           window.location.href="#/index";
-                                       });
-        }
-    });
+        $http(req).then(function(data){
+            console.log('Response data after POST ...');
+            console.log(data);
+            $http.defaults.headers.common.Authorization =
+                'Bearer ' + data.data.access_token;
+                $cookies.put("access_token", data.data.access_token);
+                window.location.href="#/index";
+        });
+    }
+});

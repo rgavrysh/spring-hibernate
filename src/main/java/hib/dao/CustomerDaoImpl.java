@@ -4,12 +4,15 @@ import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Customer;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.List;
 
 @Repository("customerDao")
+@Transactional
 public class CustomerDaoImpl implements CustomerDao {
     private final APILogger<CustomerDaoImpl> logger = new APILoggerImpl<>(this);
 
@@ -48,5 +51,11 @@ public class CustomerDaoImpl implements CustomerDao {
         query.setParameter(3, customer.getEmail());
         Customer cstm = (Customer) query.getSingleResult();
         return cstm;
+    }
+
+    @Override
+    public List<Customer> listUsers() {
+//        return entityManager.createQuery("from customer", Customer.class).getResultList();
+        return entityManager.createNativeQuery("select * from customer;", Customer.class).getResultList();
     }
 }

@@ -1,5 +1,26 @@
-<div ng-controller ="about as about" class="container">
-    <p>About customer:</p>
-    <br>
+<div ng-controller="about as about" class="container">
     <p>Hello {{about.customer.name}} !</p>
+</div>
+<div ng-show="admin" ng-controller="about as about" class="container panel panel-default">
+    <div class="panel-heading">Users</div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>email</th>
+            <th>phone</th>
+            <th>roles</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in about.users">
+            <td>{{user.id}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.phone}}</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
 </div>

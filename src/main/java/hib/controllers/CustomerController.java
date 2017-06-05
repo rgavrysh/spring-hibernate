@@ -10,6 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.OverridesAttribute;
+import java.util.List;
+
 @RestController
 public class CustomerController {
     private final APILogger<CustomerController> logger = new APILoggerImpl<>(this);
@@ -23,6 +26,14 @@ public class CustomerController {
     Customer getMe(@AuthenticationPrincipal Customer me) {
         logger.info(me.toString());
         return me;
+    }
+
+    @RequestMapping(value = "/customers", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Customer> getCustomers() {
+        logger.info("Get all customers.");
+        return customerService.listAllUsers();
     }
 
     @RequestMapping(value = "/customer/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

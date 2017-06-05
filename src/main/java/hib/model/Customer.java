@@ -1,6 +1,7 @@
 package hib.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import hib.restEntity.CreateCustomer;
 import org.hibernate.validator.constraints.Email;
 
@@ -10,9 +11,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "customer")
 @Table(name = "customer")
-public class Customer implements Serializable {
+public class Customer {
     private static final long serialVersionUID = -3965610784506338772L;
 
     @Id
@@ -26,9 +27,13 @@ public class Customer implements Serializable {
     @NotNull
     @JsonIgnore
     private String password;
-    @OneToMany(mappedBy = "customerId", fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<UserToRole> userToRoles = new HashSet<>();
+
+//    @OneToMany(mappedBy = "customerId", fetch = FetchType.EAGER)
+//    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user2role")
+    @JsonManagedReference
+    private Set<Role> role = new HashSet<>();
 
     protected Customer() {
     }
@@ -50,7 +55,7 @@ public class Customer implements Serializable {
         this.name = user.getName();
         this.email = user.getEmail();
         this.phone = user.getPhone();
-        this.userToRoles = user.getUserToRoles();
+        this.role = user.getRole();
         this.password = user.getPassword();
     }
 
@@ -88,12 +93,12 @@ public class Customer implements Serializable {
         this.email = email;
     }
 
-    public Set<UserToRole> getUserToRoles() {
-        return userToRoles;
+    public Set<Role> getRole() {
+        return role;
     }
 
-    public void setUserToRoles(Set<UserToRole> userToRoles) {
-        this.userToRoles = userToRoles;
+    public void setRole(Set<Role> role) {
+        this.role = role;
     }
 
     public String getPassword() {

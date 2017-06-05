@@ -5,7 +5,6 @@ import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Customer;
 import hib.model.Role;
-import hib.model.UserToRole;
 import hib.restEntity.CreateCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -39,6 +38,11 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     }
 
     @Override
+    public List<Customer> listAllUsers() {
+        return customerDao.listUsers();
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Customer user = customerDao.findByLogin(login);
         if (user == null)
@@ -54,10 +58,11 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            Set<Role> roles = new HashSet<>();
-            for (UserToRole role : getUserToRoles()) {
-                roles.add(role.getRoleId());
-            }
+            Set<Role> roles = getRole();
+//            Set<Role> roles = new HashSet<>();
+//            for (UserToRole role : getRole()) {
+//                roles.add(role.getRoleId());
+//            }
             return roles;
         }
 
