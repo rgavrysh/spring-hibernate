@@ -56,8 +56,11 @@ public class OAuth2Config {
         public void configure(HttpSecurity http) throws Exception {
             http
                     .csrf().disable()
+                    .httpBasic()
+                    .and()
                     .authorizeRequests()
-                    .anyRequest().authenticated().and().httpBasic();
+                    .antMatchers("/index", "/login", "/", "/home", "/js/*").permitAll()
+                    .anyRequest().authenticated();
         }
     }
 }

@@ -1,0 +1,10 @@
+<div ng-controller ="home as home" id="2" class="container">
+    <h1>Home</h1>
+    <button name="btn" type="submit" ng-click="home.getData()">getNewData</button>
+
+    <div ng-show="!authenticated">Please, <a href="#/login">login</a></div>
+    <br>
+    <p>The ID is: </p>
+    <p ng-show="authenticated">{{home.greeting.id}}</p>
+    <p>The content is: {{home.greeting.content}}</p>
+</div>
