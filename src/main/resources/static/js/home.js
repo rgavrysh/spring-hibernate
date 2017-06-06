@@ -20,58 +20,16 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
     })
     .controller('about', function($scope, $rootScope, $http, $cookies){
         var self = this;
-
-        $rootScope.$on('getUserInfo', function(){
-            self.me();
-        })
-
-        var isLoginPage = window.location.href.indexOf("login") != -1;
-                if(isLoginPage){
-                    if($cookies.get("access_token")){
-                        window.location.href = "index";
-                    }
-                } else{
-                    if($cookies.get("access_token")){
-                        $http.defaults.headers.common.Authorization =
-                          'Bearer ' + $cookies.get("access_token");
-                    } else{
-                    }
-                }
-
-        self.me = function() {
-                    console.log('get information about user ... ');
-                    getAboutMe();
-                }
-
-        function getAboutMe() {
-            $http.get('/me').then(function(response){
-                console.log('received data ...');
-                console.log(response);
-                self.customer = response.data;
-                for (var i = 0; i < self.customer.authorities.length; i++){
-                	if(self.customer.authorities[i].authority.includes('ADMIN')){
-                		$rootScope.admin = true;
-                		console.log('admin role');
-                    }
-                }
-                $rootScope.username = self.customer.name;
-            })
-        }
-        self.me();
-
         self.getUsersData = function() {
             if ($rootScope.admin){
                 $http.get('/customers').then(function(response){
-                    console.log('get all users ...');
-                    console.log(response);
                     self.users = response.data;
                     document.getElementById('progressbar').style.display='none';
                 })
             } else {
+
             }
         }
-        self.getUsersData();
-
         self.deleteUser = function (userInfo){
             if (confirm('Are you sure to delete user ' + userInfo.name + '?')){
                 $http.delete('/customer/' + userInfo.id + '/delete').then(function(response){
@@ -94,9 +52,7 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
         }
 
         self.save = function(userInfo){
-            console.log(userInfo);
             $http.post('/customer', userInfo).then(function(response){
-                console.log(response);
             })
         }
     })
@@ -152,51 +108,36 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
         }
     })
     .controller('navigation', function($scope, $rootScope, $http, $location, $httpParamSerializer, $cookies){
-        console.log('navigation controller 2 ...');
         var self = this;
-            self.data= {
-                grant_type:"password",
-                username: "",
-                password: ""
-            };
-
-        var req = {
-                    method: 'POST',
-                    url: "http://localhost:8080/oauth/token",
-                    headers: {
-                        "Authorization": "Basic cmVzdDpxd2UxMjM=",
-                        "Content-type": "application/x-www-form-urlencoded; charset=utf-8"
-                    },
-                    data: $httpParamSerializer(self.data)
-                }
-        console.log('Prepared data: ');
-        console.log(req);
+        self.data= {
+            grant_type:"password",
+            username: "",
+            password: ""
+        };
 
         self.login = function(){
-            getToken(self.data);
-            $rootScope.authenticated = true;
-            $rootScope.$emit('getUserInfo', {});
-        }
-
-        function getToken(data){
-        console.log('updated data');
-        console.log(data);
-        req = {
-            method: 'POST',
-            url: "http://localhost:8080/oauth/token",
-            headers: {
-                "Authorization": "Basic cmVzdDpxd2UxMjM=",
-                "Content-type": "application/x-www-form-urlencoded; charset=utf-8"},
-            data: $httpParamSerializer(self.data)
+            req = {
+                method: 'POST',
+                url: "http://localhost:8080/oauth/token",
+                headers: {
+                    "Authorization": "Basic cmVzdDpxd2UxMjM=",
+                    "Content-type": "application/x-www-form-urlencoded; charset=utf-8"},
+                data: $httpParamSerializer(self.data)
             }
-        console.log(req);
-        $http(req).then(function(data){
-            console.log('Response data after POST ...');
-            console.log(data);
-            $http.defaults.headers.common.Authorization =
-                'Bearer ' + data.data.access_token;
-                $cookies.put("access_token", data.data.access_token);
-                window.location.href="#/index";
-        });
-    }
+            $http(req).then(function(response){
+                $http.defaults.headers.common.Authorization =
+                    'Bearer ' + response.data.access_token;
+                    $cookies.put("access_token", response.data.access_token);
+                    $rootScope.authenticated = true;
+                    $http.get('/me').then(function(response){
+                                    $rootScope.currentUser = response.data;
+                                    for (var i = 0; i < $rootScope.currentUser.authorities.length; i++){
+                                        if($rootScope.currentUser.authorities[i].authority.includes('ADMIN')){
+                                            $rootScope.admin = true;
+                                        }
+                                    }
+                                })
+                    window.location.href="#/index";
+            });
+        }
 });

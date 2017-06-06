@@ -22,9 +22,9 @@
                 <a href="" ng-click="home.logout()">logout</a>
             </li>
             <li class="nav navbar-nav navbar-right" ng-controller="about as about" ng-show="authenticated">
-                <a ng-click="about.me()" href="#/about">
+                <a href="#/about">
                     <span ng-show="admin">admin</span>
-                    <span ng-show="!admin">{{username}}</span>
+                    <span ng-show="!admin">{{currentUser.name}}</span>
                 </a>
             </li>
             <li class="nav navbar-nav navbar-right" ng-show="!authenticated" ng-class="{active:nav.tab('navigation')}">
