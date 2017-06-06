@@ -9,4 +9,5 @@ public interface CustomerService {
     Customer findOneById(final int id);
     Customer create(final CreateCustomer createCustomer);
     List<Customer> listAllUsers();
+    void delete(final int id);
 }

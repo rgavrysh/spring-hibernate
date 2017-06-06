@@ -1,6 +1,7 @@
 package hib.bo;
 
 import hib.model.Booking;
+import hib.model.Customer;
 import hib.model.Venue;
 import hib.restEntity.BookTime;
 
@@ -16,4 +17,6 @@ public interface BookingService {
     void delete(final int id);
 
     Booking findById(final int id);
+
+    List<Booking> findAllByCustomer(Customer customer);
 }

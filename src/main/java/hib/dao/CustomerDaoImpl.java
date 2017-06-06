@@ -58,4 +58,10 @@ public class CustomerDaoImpl implements CustomerDao {
 //        return entityManager.createQuery("from customer", Customer.class).getResultList();
         return entityManager.createNativeQuery("select * from customer;", Customer.class).getResultList();
     }
+
+    @Override
+    public void delete(Customer customer) {
+        entityManager.merge(customer);
+        entityManager.remove(customer);
+    }
 }

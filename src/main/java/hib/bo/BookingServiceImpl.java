@@ -40,6 +40,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public List<Booking> findAllByCustomer(Customer customer) {
+        return bookingDao.findAllByCustomer(customer);
+    }
+
+    @Override
     public Booking create(final BookTime bookTime, final int venueId) {
         logger.info("Book new time for venue by id: " + venueId);
         Venue venue = venueDao.findOneById(venueId);

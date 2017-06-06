@@ -3,6 +3,7 @@ package hib.dao;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Booking;
+import hib.model.Customer;
 import hib.model.Venue;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,13 @@ public class BookingDaoImpl implements BookingDao {
         query.setParameter(2, customerId);
         bookings = query.getResultList();
         return bookings;
+    }
+
+    @Override
+    public List<Booking> findAllByCustomer(Customer customer) {
+        Query query = entityManager.createQuery("from booking where customer_id = :id", Booking.class);
+        query.setParameter("id", customer.getId());
+        return query.getResultList();
     }
 
     @Override

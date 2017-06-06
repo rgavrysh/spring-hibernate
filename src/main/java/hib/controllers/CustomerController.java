@@ -6,6 +6,7 @@ import hib.logging.APILoggerImpl;
 import hib.model.Customer;
 import hib.restEntity.CreateCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +52,13 @@ public class CustomerController {
     Customer addNewCustomer(@RequestBody CreateCustomer createCustomer) {
         logger.info("Add new customer");
         return customerService.create(createCustomer);
+    }
+
+    @RequestMapping(value = "customer/{id}/delete", method = RequestMethod.DELETE)
+    public
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    void deleteUser(@PathVariable final int id){
+        customerService.delete(id);
     }
 
 }

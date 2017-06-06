@@ -3,6 +3,7 @@ package hib.bo;
 import hib.dao.CustomerDao;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
+import hib.model.Booking;
 import hib.model.Customer;
 import hib.model.Role;
 import hib.restEntity.CreateCustomer;
@@ -22,6 +23,8 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     private final APILogger<CustomerServiceImpl> logger = new APILoggerImpl<>(this);
     @Autowired
     private CustomerDao customerDao;
+    @Autowired
+    private BookingService bookingService;
 
     @Override
     public Customer findOneById(int id) {
@@ -43,6 +46,17 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     }
 
     @Override
+    public void delete(final int id) {
+        //todo: implement rollback logic or cascade deleting
+        Customer customer = customerDao.findOneById(id);
+        List<Booking> bookings = bookingService.findAllByCustomer(customer);
+        for (Booking booking : bookings){
+            bookingService.delete(booking.getId());
+        }
+        customerDao.delete(customer);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Customer user = customerDao.findByLogin(login);
         if (user == null)
@@ -59,10 +73,6 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             Set<Role> roles = getRole();
-//            Set<Role> roles = new HashSet<>();
-//            for (UserToRole role : getRole()) {
-//                roles.add(role.getRoleId());
-//            }
             return roles;
         }
 

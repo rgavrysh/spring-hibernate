@@ -28,8 +28,6 @@ public class Customer {
     @JsonIgnore
     private String password;
 
-//    @OneToMany(mappedBy = "customerId", fetch = FetchType.EAGER)
-//    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user2role")
     @JsonManagedReference

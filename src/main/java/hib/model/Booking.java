@@ -1,11 +1,14 @@
 package hib.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Entity
+@Entity(name = "booking")
 @Table(name = "booking")
 public class Booking implements Serializable {
     private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -21,7 +24,8 @@ public class Booking implements Serializable {
     Venue venue;
 
     @JoinColumn(name = "customer_id")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     Customer customer;
 
     @Column(name = "start_date_time")
@@ -78,5 +82,13 @@ public class Booking implements Serializable {
 
     public void setEndDateTime(Date endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

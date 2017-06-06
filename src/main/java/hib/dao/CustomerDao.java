@@ -14,4 +14,6 @@ public interface CustomerDao {
     Customer find(final Customer customer);
 
     List<Customer> listUsers();
+
+    void delete(Customer customer);
 }

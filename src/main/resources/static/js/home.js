@@ -59,15 +59,26 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
         }
         self.me();
 
-        self.getUsersData = function getUsers() {
-        $http.get('/customers').then(function(response){
-            console.log('get all users ...');
-            console.log(response);
-            self.users = response.data;
-        })
+        self.getUsersData = function() {
+            if ($rootScope.admin){
+                $http.get('/customers').then(function(response){
+                    console.log('get all users ...');
+                    console.log(response);
+                    self.users = response.data;
+                })
+            } else {
+            }
         }
-
         self.getUsersData();
+
+        self.deleteUser = function (userInfo){
+            if (confirm('Are you sure to delete user ' + userInfo.name + '?')){
+                $http.delete('/customer/' + userInfo.id + '/delete').then(function(response){
+                    console.log(userInfo + ' has been successfully removed.');
+                    self.getUsersData();
+                })
+            }
+        }
     })
     .controller('home', function($scope, $rootScope, $http, $cookies, $location){
         console.log('home controller 1 ...');
