@@ -35,6 +35,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public Customer create(final Customer customer) {
+        //todo: use save() instead of persist()
         logger.debug("DAO: add new customer");
         entityManager.persist(customer);
         entityManager.flush();

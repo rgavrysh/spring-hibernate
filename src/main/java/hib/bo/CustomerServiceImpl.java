@@ -1,6 +1,7 @@
 package hib.bo;
 
 import hib.dao.CustomerDao;
+import hib.dao.RoleDao;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Booking;
@@ -12,9 +13,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,9 +25,13 @@ import java.util.Set;
 public class CustomerServiceImpl implements CustomerService, UserDetailsService {
     private final APILogger<CustomerServiceImpl> logger = new APILoggerImpl<>(this);
     @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
     private CustomerDao customerDao;
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private RoleDao roleDao;
 
     @Override
     public Customer findOneById(int id) {
@@ -36,6 +43,11 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     public Customer create(final CreateCustomer createCustomer) {
         logger.info("Service: create new customer");
         Customer customer = new Customer(createCustomer);
+        customer.setPassword(passwordEncoder.encode("1111"));
+        Set<Role> roles = new HashSet<>();
+        Role role = roleDao.findOneById(2);
+        roles.add(role);
+        customer.setRole(roles);
         customerDao.create(customer);
         return customerDao.find(customer);
     }

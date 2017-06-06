@@ -65,6 +65,7 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
                     console.log('get all users ...');
                     console.log(response);
                     self.users = response.data;
+                    document.getElementById('progressbar').style.display='none';
                 })
             } else {
             }
@@ -75,9 +76,28 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
             if (confirm('Are you sure to delete user ' + userInfo.name + '?')){
                 $http.delete('/customer/' + userInfo.id + '/delete').then(function(response){
                     console.log(userInfo + ' has been successfully removed.');
-                    self.getUsersData();
                 })
             }
+        }
+    })
+    .controller('userForm', function($scope, $http){
+        var self = this;
+        self.isExpanded = false;
+        self.userInfo = {
+            name: "",
+            phone: "",
+            email: ""
+        }
+
+        self.showForm = function(){
+        self.isExpanded = !self.isExpanded;
+        }
+
+        self.save = function(userInfo){
+            console.log(userInfo);
+            $http.post('/customer', userInfo).then(function(response){
+                console.log(response);
+            })
         }
     })
     .controller('home', function($scope, $rootScope, $http, $cookies, $location){
