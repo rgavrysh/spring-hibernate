@@ -31,9 +31,10 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
             }
         }
         self.deleteUser = function (userInfo){
-            if (confirm('Are you sure to delete user ' + userInfo.name + '?')){
+            if (confirm('Are you sure you want to delete user ' + userInfo.name + '?')){
                 $http.delete('/customer/' + userInfo.id + '/delete').then(function(response){
-                    console.log(userInfo + ' has been successfully removed.');
+                    self.isRemoved = true;
+                    self.getUsersData();
                 })
             }
         }
@@ -53,58 +54,16 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
 
         self.save = function(userInfo){
             $http.post('/customer', userInfo).then(function(response){
+                self.isUserAddedSuccessfully = true;
             })
         }
     })
     .controller('home', function($scope, $rootScope, $http, $cookies, $location){
-        console.log('home controller 1 ...');
         var self = this;
-
-
-        var isLoginPage = window.location.href.indexOf("login") != -1;
-        if(isLoginPage){
-            if($cookies.get("access_token")){
-                window.location.href = "index";
-            }
-        } else{
-            if($cookies.get("access_token")){
-                $http.defaults.headers.common.Authorization =
-                  'Bearer ' + $cookies.get("access_token");
-            } else{
-            }
-        }
-
-
-        console.log(self);
-        self.getData = function() {
-            if(!$rootScope.authenticated){
-                alert('Please login');
-            } else {
-                console.log('call getData()...');
-                getHomeData();
-            }
-        }
-        function getHomeData() {
-
-        $http.get('/greeting').then(function(response){
-            console.log('response:');
-            console.log(response);
-            self.greeting = response.data;
+        self.getHomeData = function () {
+            $http.get('/greeting').then(function(response){
+                self.greeting = response.data;
             })
-        }
-
-        self.logout = function() {
-                loggingout();
-        	}
-
-        function loggingout() {
-        				$http.post('logout', {}).finally(function() {
-        				$cookies.remove("access_token");
-        					$rootScope.authenticated = false;
-        					$location.path("/login");
-                            $rootScope.authenticated = false;
-                            window.location.href="#/index";
-        					})
         }
     })
     .controller('navigation', function($scope, $rootScope, $http, $location, $httpParamSerializer, $cookies){
@@ -139,5 +98,15 @@ angular.module('get-pitch', [ 'ngRoute', 'ngCookies'])
                                 })
                     window.location.href="#/index";
             });
+        }
+
+        self.logout = function() {
+            $http.post('logout', {}).finally(function() {
+                $cookies.remove("access_token");
+                $rootScope.authenticated = false;
+                $location.path("/login");
+                $rootScope.authenticated = false;
+                window.location.href="#/index";
+            })
         }
 });

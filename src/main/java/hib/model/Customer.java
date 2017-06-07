@@ -3,12 +3,14 @@ package hib.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import hib.restEntity.CreateCustomer;
+import org.hibernate.action.internal.OrphanRemovalAction;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "customer")
@@ -27,6 +29,10 @@ public class Customer {
     @NotNull
     @JsonIgnore
     private String password;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Booking> bookings;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user2role")
@@ -105,5 +111,13 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 }

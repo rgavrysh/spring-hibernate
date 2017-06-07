@@ -18,8 +18,8 @@
     <div ng-controller="navigation as nav" id="1" class="container">
         <ul style="margin: 5px" class="nav nav-pills" role="tablist">
             <li><a href="#/home">home</a></li>
-            <li class="nav navbar-nav navbar-right" ng-controller="home as home" ng-show="authenticated">
-                <a href="" ng-click="home.logout()">logout</a>
+            <li class="nav navbar-nav navbar-right" ng-show="authenticated">
+                <a href="" ng-click="nav.logout()">logout</a>
             </li>
             <li class="nav navbar-nav navbar-right" ng-controller="about as about" ng-show="authenticated">
                 <a href="#/about">
@@ -37,6 +37,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-route.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-cookies.min.js"></script>
-<script src="js/home.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package hib.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -25,7 +26,8 @@ public class Booking implements Serializable {
 
     @JoinColumn(name = "customer_id")
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
+            @JsonBackReference
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     Customer customer;
 
     @Column(name = "start_date_time")

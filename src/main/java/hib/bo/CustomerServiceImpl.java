@@ -59,12 +59,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Override
     public void delete(final int id) {
-        //todo: implement rollback logic or cascade deleting
         Customer customer = customerDao.findOneById(id);
-        List<Booking> bookings = bookingService.findAllByCustomer(customer);
-        for (Booking booking : bookings){
-            bookingService.delete(booking.getId());
-        }
         customerDao.delete(customer);
     }
 

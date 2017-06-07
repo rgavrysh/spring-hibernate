@@ -18,14 +18,11 @@ public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id")
     private Integer id;
     @NotNull
     private String name;
     private String grants;
 
-//    @OneToMany(mappedBy = "roleId", fetch = FetchType.EAGER)
-//    @JsonIgnore
     @ManyToMany(mappedBy = "role")
     @JsonBackReference
     private Collection<Customer> customer = new HashSet<>();
