@@ -1,5 +1,6 @@
 package hib.config;
 
+import hib.bo.CustomerService;
 import hib.bo.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private CustomerServiceImpl customerService;
+    private CustomerService customerService;
 
     @Override
     @Bean

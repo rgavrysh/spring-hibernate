@@ -59,7 +59,7 @@ public class OAuth2Config {
                     .httpBasic()
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/index", "/login", "/", "/home", "/js/*").permitAll()
+                    .antMatchers("/index", "/login", "/", "/home", "/js/**").permitAll()
                     .anyRequest().authenticated();
         }
     }
