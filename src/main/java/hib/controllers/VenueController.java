@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class VenueController {
     private final APILogger<VenueController> logger = new APILoggerImpl<>(this);
@@ -35,5 +37,13 @@ public class VenueController {
         venueService.delete(id);
         return new Response("Entity deleted", String.valueOf(HttpStatus.OK),
                 "Venue id: " + id + " has been deleted");
+    }
+
+    @RequestMapping(value = "/venues", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Venue> getAllVenue(){
+        logger.info("Get all available venues.");
+        return venueService.listAllVenues();
     }
 }

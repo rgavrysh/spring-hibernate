@@ -46,6 +46,15 @@ public class BookingsController {
         return bookings;
     }
 
+    //todo: change value to "/me/bookings"
+    @RequestMapping(value = "/me/bookings/venue", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Booking> getBookingsByUser(@AuthenticationPrincipal Customer customer){
+        logger.info("Get all bookings by user " + customer.getName());
+        return bookingService.findAllByCustomer(customer);
+    }
+
     @RequestMapping(value = "/bookings/venue/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody

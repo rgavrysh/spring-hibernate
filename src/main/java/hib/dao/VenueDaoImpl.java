@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.List;
 
 @Repository("venueDao")
 //@Transactional
@@ -65,5 +66,10 @@ public class VenueDaoImpl implements VenueDao {
         logger.debug("DAO: delete venue with id: " + venue.getId());
         entityManager.remove(entityManager.contains(venue) ? venue : entityManager.merge(venue));
         entityManager.flush();
+    }
+
+    @Override
+    public List<Venue> listVenues() {
+        return entityManager.createNativeQuery("select * from venue;", Venue.class).getResultList();
     }
 }

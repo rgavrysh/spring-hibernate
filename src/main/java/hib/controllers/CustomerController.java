@@ -29,6 +29,7 @@ public class CustomerController {
         return me;
     }
 
+//    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
     public
     @ResponseBody

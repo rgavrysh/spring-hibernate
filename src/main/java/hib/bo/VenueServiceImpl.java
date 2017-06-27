@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import java.util.List;
 
 @Service("venueService")
 public class VenueServiceImpl implements VenueService {
@@ -56,5 +57,10 @@ public class VenueServiceImpl implements VenueService {
         }
         logger.info("Service: delete venue with id: " + id);
         venueDao.delete(venue);
+    }
+
+    @Override
+    public List<Venue> listAllVenues() {
+        return venueDao.listVenues();
     }
 }
