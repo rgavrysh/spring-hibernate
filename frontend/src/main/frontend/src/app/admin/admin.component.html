@@ -1,0 +1,60 @@
+<a id="mdl-custom-btn" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" (click)="displayModal()">Add User</a>
+<table id="table" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+	  <thead>
+	    <tr>
+	      <label>
+          </label>
+	      <th class="mdl-data-table__cell--non-numeric">Name</th>
+	      <th class="mdl-data-table__cell--non-numeric">Email</th>
+	      <th class="mdl-data-table__cell--non-numeric">Phome</th>
+	      <th class="mdl-data-table__cell--non-numeric">...</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr *ngFor="let user of users">
+	      <td>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect mdl-data-table__select" for="user.name">
+            <input type="checkbox" id="{{user.name}}" class="mdl-checkbox__input" [(ngModel)]="user.selected"/>
+          </label>
+      </td>
+	      <td class="mdl-data-table__cell--non-numeric">{{user.name}}</td>
+	      <td class="mdl-data-table__cell--non-numeric">{{user.email}}</td>
+	      <td class="mdl-data-table__cell--non-numeric">{{user.phone}}</td>
+	      <td><button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">edit</i></button></td>
+	    </tr>
+	  </tbody>
+</table>
+<div id="mdl-custom-modal" class="modal" [style.display]="isOpen">
+    <div class="modal-content mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title mdl-card--expand">
+            <form>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" pattern="^\s*[0-9a-zA-Z][0-9a-zA-Z ]*$" id="mdl-name" name="mdl-name" [(ngModel)]="newUser.name" >
+                    <label class="mdl-textfield__label" for="mdl-name">Name...</label>
+                    <span class="mdl-textfield__error">The field can not be empty!</span>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" pattern="^[\s()+-]*([0-9][\s()+-]*){6,20}$" id="mdl-phone" name="mdl-phone" [(ngModel)]="newUser.phone" >
+                    <label class="mdl-textfield__label" for="mdl-phone">Phone...</label>
+                    <span class="mdl-textfield__error">Input is not a number!</span>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' id="mdl-email" name="mdl-email" [(ngModel)]="newUser.email" >
+                    <label class="mdl-textfield__label" for="mdl-email">E-mail...</label>
+                    <span class="mdl-textfield__error">E-mail is not valid!</span>
+                </div>
+            </form>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" (click)="onSubmit()">
+                Submit
+            </a>
+        </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-custom-close" (click)="closeModal()">
+              <span class="material-icons">close</span>
+            </button>
+        </div>
+    </div>
+</div>
+<button class="mdl-button mdl-js-button mdl-button--raised" (click)="deleteUsers()">Delete</button>

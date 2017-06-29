@@ -1,0 +1,32 @@
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <span class="mdl-layout-title">Welcome</span>
+      <div class="mdl-layout-spacer"></div>
+      <div class="mdl-navigation">
+        <a class="nav-link" [routerLink]="['/home']">home</a>
+        <a class="nav-link" [routerLink]="['/venues']">venues</a>
+        <a class="nav-link" [routerLink]="['/admin']">admin</a>
+      </div>
+      <button id="demo-menu-lower-right"
+              class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons md-light">assignment ind</i>
+      </button>
+      <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+          for="demo-menu-lower-right">
+        <li class="mdl-menu__item"><a class="profile-link" [routerLink]="['/me']">Profile</a></li>
+        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">
+          <a class="profile-link" [routerLink]="['/mybookings']">My Bookings</a></li>
+        <li class="mdl-menu__item"><a class="profile-link" href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </header>
+  <main class="mdl-layout__content">
+    <section>
+      <div class="page-content">
+        <router-outlet></router-outlet>
+      </div>
+    </section>
+  </main>
+
+</div>

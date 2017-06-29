@@ -1,13 +1,31 @@
 ### Status
 [![Build Status](https://travis-ci.org/rgavrysh/spring-hibernate.png?branch=master)](https://travis-ci.org/rgavrysh/spring-hibernate)
-# spring-hibernate
+# Spring-Boot (backend REST) + Angular 2 (frontend)
 This is training project.
 
-The main idea is to build RESTful Spring application.
+The main idea is to build RESTful Spring application. Frontend built using Angular2.
 
 Application connects to PostgreSQL database in Heroku and do simple transactions. Travis-CI used for building project, then deploys it to Heroku.
 
+# Application structure:
+Stack of technologies:
+ 1) Backend: Spring-boot, Hibernate, JPA, PostgreSQL, Spring-embedded Tomcat
+ 2) Frontend: Angular 2, Express server
+
 # To test and get to know how application works you need:
+ Application consist of two modules: backend and frontend.
+ Clone and run ```mvn package```. It will build and package two modules.
+ Backend module is a RESTfull service running on spring-embedded server under port 8080. To start backend run
+ ```java
+ java -jar -Dserver.port=8080 backend/target/backend-1.0-SNAPSHOT.jar
+ ```
+ Frontend module is Angular 2 application which is accessible by port 4200. To start frontend run
+ ```
+ node frontend/src/main/frontend/server.js
+ ```
+ # Additional details
+ As frontend is an Angular 2 app you can use angular-cli to run it using ```ng serve```. Otherwise you can use node Express server and start app like ```node server.js```. Frontend then send requests to backend on address: http://localhost:8080/.
+
  1) Get auth token (make a POST request to http://localhost:8080/oauth/token) to make further requests:
  ```java
   curl -i -X POST -H 'Authorization: Basic cmVzdDpxd2UxMjM=' -d 'username=Volodymyr&password=****&grant_type=password' 'http://localhost:8080/oauth/token'

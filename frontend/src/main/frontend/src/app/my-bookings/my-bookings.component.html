@@ -1,0 +1,29 @@
+<p>
+  my-bookings works!
+</p>
+<table id="table" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+	  <thead>
+	    <tr>
+	      <label>
+          </label>
+	      <th class="mdl-data-table__cell--non-numeric">Name</th>
+	      <th class="mdl-data-table__cell--non-numeric">start_date_time</th>
+	      <th class="mdl-data-table__cell--non-numeric">end_date_time</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr *ngFor="let booking of bookings">
+	      <td>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect mdl-data-table__select" for="booking.id">
+            <input type="checkbox" id="{{booking.id}}" class="mdl-checkbox__input" [(ngModel)]="booking.selected" />
+          </label>
+      </td>
+	      <td class="mdl-data-table__cell--non-numeric">{{booking.venue.name}}</td>
+	      <td class="mdl-data-table__cell--non-numeric">{{dateParser(booking.startDateTime)}}</td>
+	      <td class="mdl-data-table__cell--non-numeric">{{dateParser(booking.endDateTime)}}</td>
+	      <td><button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons" >edit</i></button></td>
+	    </tr>
+	  </tbody>
+</table>
+<button class="mdl-button mdl-js-button mdl-button--raised" (click)="deleteBooking()">Remove Booking</button>
+
