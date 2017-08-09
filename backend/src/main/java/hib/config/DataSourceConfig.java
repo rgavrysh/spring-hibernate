@@ -3,6 +3,7 @@ package hib.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -17,7 +18,8 @@ import java.sql.SQLException;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource("classpath:application.properties")
+@Profile("prod")
+//@PropertySource("classpath:application.properties")
 public class DataSourceConfig {
 
     private String databaseUrl;

@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 @Repository("bookingDao")
 @Transactional
 public class BookingDaoImpl implements BookingDao {
@@ -61,6 +62,7 @@ public class BookingDaoImpl implements BookingDao {
         return query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Booking findOneById(int bookingId) {
         logger.debug("Finding booking by id: " + bookingId);
@@ -92,6 +94,7 @@ public class BookingDaoImpl implements BookingDao {
         return bookingList;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void delete(final int bookingId) {
         logger.debug("DAO: remove booking");
