@@ -21,7 +21,8 @@ export class ProfileComponent implements OnInit {
   getUserInfo(){
     this.backendService.aboutMe()
       .subscribe(
-        res => this.me = res,
+        res => { this.me = res;
+        console.log(this.me)},
         err => this.errorMsg = <any>err);
   }
 

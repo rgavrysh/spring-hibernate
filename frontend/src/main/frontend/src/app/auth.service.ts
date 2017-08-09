@@ -25,7 +25,7 @@ export class AuthService {
     var headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers.append('Authorization', 'Basic cmVzdDpxd2UxMjM=');
-    return this.http.post('http://localhost:8080/oauth/token', body.toString(), { headers: headers })
+    return this.http.post('https://localhost:8443/oauth/token', body.toString(), { headers: headers })
       .map((response: Response) => {
         this.oauthToken = response.json();
         if (this.oauthToken.access_token){

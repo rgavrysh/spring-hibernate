@@ -21,7 +21,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:8080/customers', { headers: headers })
+    return this.http.get('https://localhost:8443/customers', { headers: headers })
                     .map(response => response.json());
   }
 
@@ -30,7 +30,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.delete('http://localhost:8080/customer/'+userId+'/delete', { headers: headers })
+    return this.http.delete('https://localhost:8443/customer/'+userId+'/delete', { headers: headers })
       .map((response: Response) => {
       	if (response.ok){
       	  return true;
@@ -43,7 +43,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.delete('http://localhost:8080/bookings/'+bookingId, { headers: headers })
+    return this.http.delete('https://localhost:8443/bookings/'+bookingId, { headers: headers })
       .map((response: Response) => {
         if (response.ok){
           return true;
@@ -57,7 +57,7 @@ export class BackendService {
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
     var body = JSON.stringify(user);
-    return this.http.post('http://localhost:8080/customer', body, { headers: headers })
+    return this.http.post('https://localhost:8443/customer', body, { headers: headers })
       .map((response: Response) => {
         if (response.ok){
           return true;
@@ -70,7 +70,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:8080/venues', { headers: headers })
+    return this.http.get('https://localhost:8443/venues', { headers: headers })
                     .map(response => response.json());
   }
 
@@ -79,7 +79,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:8080/me/bookings/venue', {headers: headers})
+    return this.http.get('https://localhost:8443/me/bookings/venue', {headers: headers})
       .map(response => response.json());
   }
 
@@ -88,7 +88,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/bookings/venue/'+id+'/bookTime', body, {headers: headers})
+    return this.http.post('https://localhost:8443/bookings/venue/'+id+'/bookTime', body, {headers: headers})
       .map((response: Response) => {
         if (response.ok){
           return true;
@@ -101,7 +101,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:8080/me', {headers: headers})
+    return this.http.get('https://localhost:8443/me', {headers: headers})
       .map(response => response.json());
   }
 
