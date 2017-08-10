@@ -29,13 +29,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**")
-        .antMatchers("/h2/**");
+                .antMatchers("/h2/**");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
         builder.authenticationProvider(authenticationProvider());
-//        builder.userDetailsService(customerService);
     }
 
     @Bean

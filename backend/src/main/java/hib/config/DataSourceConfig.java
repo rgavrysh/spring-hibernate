@@ -4,51 +4,58 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaDialect;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
+import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.beans.PropertyVetoException;
-import java.sql.SQLException;
+import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
 @Profile("prod")
-//@PropertySource("classpath:application.properties")
 public class DataSourceConfig {
 
-    private String databaseUrl;
-
     @Value("${database.host}")
-    String ipAddress;
+    private String ipAddress;
 
     @Value("${database.port}")
-    String port;
+    private String port;
 
     @Value("${database.name}")
-    String database;
+    private String database;
 
     @Value("${database.user}")
-    String databaseUser;
+    private String databaseUser;
 
     @Value(value = "${database.password}")
-    String databasePassword;
+    private String databasePassword;
 
-//    @Value("${jpa.showSql}")
-//    Boolean showSql;
+    @Value("${driver.classname}")
+    private String driverClassName;
 
+    @Value("${jpa.dialect}")
+    private String hibernateDialect;
+
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hbm2ddl;
+
+    private final String persistenceUnitName = "backend-api";
+
+    //    databaseUrl = "jdbc:postgresql://ec2-54-195-240-107.eu-west-1.compute.amazonaws.com:5432/d5a14h34a2t2m9?sslmode=require&user=pcxfwcgwmgdlkr&password=gLqxKDcO8trJKWuFsk_2cLahGN";
     @Bean
-    public DataSource dataSource() throws PropertyVetoException, SQLException {
-        databaseUrl = "jdbc:postgresql://" + ipAddress + ":" + port + "/" + database +
-        "?sslmode=require&user="+databaseUser+"&password="+databasePassword;
-//        databaseUrl = "jdbc:postgresql://ec2-54-195-240-107.eu-west-1.compute.amazonaws.com:5432/d5a14h34a2t2m9?sslmode=require&user=pcxfwcgwmgdlkr&password=gLqxKDcO8trJKWuFsk_2cLahGN";
+    public DataSource dataSource() {
+        final String databaseUrl = "jdbc:postgresql://" + ipAddress + ":" + port + "/" + database +
+                "?sslmode=require&user=" + databaseUser + "&password=" + databasePassword;
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-        driverManagerDataSource.setDriverClassName("org.postgresql.Driver");
+        driverManagerDataSource.setDriverClassName(driverClassName);
         driverManagerDataSource.setUrl(databaseUrl);
         driverManagerDataSource.setUsername(databaseUser);
         driverManagerDataSource.setPassword(databasePassword);
@@ -58,7 +65,6 @@ public class DataSourceConfig {
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
-//        hibernateJpaVendorAdapter.setShowSql(showSql);
         hibernateJpaVendorAdapter.setShowSql(true);
         hibernateJpaVendorAdapter.setGenerateDdl(false);
         hibernateJpaVendorAdapter.setDatabase(Database.POSTGRESQL);
@@ -66,7 +72,30 @@ public class DataSourceConfig {
     }
 
     @Bean
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
-        return new PropertySourcesPlaceholderConfigurer();
+    public LocalContainerEntityManagerFactoryBean entityManager() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setJpaProperties(jpaProperties());
+        em.setJpaVendorAdapter(jpaVendorAdapter());
+        em.setPersistenceUnitName(persistenceUnitName);
+        em.setPackagesToScan("hib.model");
+        return em;
+    }
+
+    @Bean
+    public Properties jpaProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", hibernateDialect);
+        properties.put("hibernate.hbm2ddl.auto", hbm2ddl);
+        return properties;
+    }
+
+    @Bean
+    public JpaTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory) {
+        JpaTransactionManager txManager = new JpaTransactionManager();
+        JpaDialect jpaDialect = new HibernateJpaDialect();
+        txManager.setEntityManagerFactory(entityManagerFactory);
+        txManager.setJpaDialect(jpaDialect);
+        return txManager;
     }
 }
