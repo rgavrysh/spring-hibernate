@@ -1,17 +1,16 @@
 package hib.controllers;
 
-import hib.bo.CustomerService;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Customer;
 import hib.restEntity.CreateCustomer;
+import hib.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.OverridesAttribute;
 import java.util.List;
 
 @RestController
@@ -29,7 +28,7 @@ public class CustomerController {
         return me;
     }
 
-//    @CrossOrigin(origins = "http://localhost:4200")
+    //    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -58,8 +57,7 @@ public class CustomerController {
     @RequestMapping(value = "customer/{id}/delete", method = RequestMethod.DELETE)
     public
     @ResponseStatus(code = HttpStatus.ACCEPTED)
-    void deleteUser(@PathVariable final int id){
+    void deleteUser(@PathVariable final int id) {
         customerService.delete(id);
     }
-
 }

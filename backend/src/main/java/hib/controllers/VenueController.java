@@ -1,6 +1,6 @@
 package hib.controllers;
 
-import hib.bo.VenueService;
+import hib.services.VenueService;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Response;

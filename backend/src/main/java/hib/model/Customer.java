@@ -3,7 +3,8 @@ package hib.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import hib.restEntity.CreateCustomer;
-import org.hibernate.action.internal.OrphanRemovalAction;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -15,7 +16,8 @@ import java.util.Set;
 
 @Entity(name = "customer")
 @Table(name = "customer")
-public class Customer {
+public class Customer implements Serializable {
+
     private static final long serialVersionUID = -3965610784506338772L;
 
     @Id
@@ -119,5 +121,36 @@ public class Customer {
 
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer:{\"id\":\"" + this.getId() +
+                "\", \"name\":\"" + this.getName() +
+                "\", \"email\":\"" + this.getEmail() + "\"}";
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .append(name)
+                .append(email)
+                .append(password)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Customer) {
+            final Customer that = (Customer) obj;
+            return new EqualsBuilder()
+                    .append(this.id, that.id)
+                    .append(this.name, that.name)
+                    .append(this.email, that.email)
+                    .append(this.password, that.password)
+                    .isEquals();
+        }
+        return false;
     }
 }

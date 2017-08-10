@@ -1,19 +1,8 @@
 package hib.dao;
 
 import hib.model.Customer;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
-
-public interface CustomerDao {
-    Customer findOneById(final int id);
-
-    Customer findByLogin(final String login);
-
-    Customer create(final Customer customer);
-
-    Customer find(final Customer customer);
-
-    List<Customer> listUsers();
-
-    void delete(Customer customer);
+public interface CustomerDao extends CrudRepository<Customer, Integer> {
+    Customer findByName(String login);
 }

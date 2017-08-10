@@ -1,4 +1,4 @@
-package hib.bo;
+package hib.services;
 
 import hib.dao.BookingDao;
 import hib.dao.CustomerDao;
@@ -48,7 +48,7 @@ public class BookingServiceImpl implements BookingService {
     public Booking create(final BookTime bookTime, final int venueId) {
         logger.info("Book new time for venue by id: " + venueId);
         Venue venue = venueDao.findOneById(venueId);
-        Customer customer = customerDao.findOneById(bookTime.getCustomerId());
+        Customer customer = customerDao.findOne(bookTime.getCustomerId());
         Booking booking = new Booking(venue, customer, bookTime.getStartDateTime(), bookTime.getEndDateTime());
         if (isTimeSlotAvailable(booking)) {
             bookingDao.create(booking);

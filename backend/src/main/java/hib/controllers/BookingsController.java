@@ -1,7 +1,7 @@
 package hib.controllers;
 
-import hib.bo.BookingService;
-import hib.bo.VenueService;
+import hib.services.BookingService;
+import hib.services.VenueService;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Booking;
@@ -42,7 +42,7 @@ public class BookingsController {
     @ResponseBody
     List<Booking> getBookingsOfVenueByUser(@AuthenticationPrincipal Customer customer, @PathVariable final int venueId) {
         logger.info("Get booking of venue requested by user " + customer.getName());
-        List<Booking> bookings = bookingService.findAllByVenueAndCustomer(venueId, customer.getId());
+        List<Booking> bookings = bookingService.findAllByVenueAndCustomer(venueId, customer.getId().intValue());
         return bookings;
     }
 
@@ -74,7 +74,7 @@ public class BookingsController {
                             @RequestBody(required = true) BookTime bookTime) {
         logger.info("Book time for venue with id: " + venueId + "; start time: " + bookTime.getStartDateTime()
                 + ", end time: " + bookTime.getEndDateTime());
-        bookTime.setCustomerId(customer.getId());
+        bookTime.setCustomerId(customer.getId().intValue());
         Booking booking = bookingService.create(bookTime, venueId);
         return booking;
     }

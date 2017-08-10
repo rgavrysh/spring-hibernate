@@ -1,6 +1,6 @@
 package hib.config;
 
-import hib.bo.CustomerService;
+import hib.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

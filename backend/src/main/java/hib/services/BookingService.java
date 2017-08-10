@@ -1,4 +1,4 @@
-package hib.bo;
+package hib.services;
 
 import hib.model.Booking;
 import hib.model.Customer;

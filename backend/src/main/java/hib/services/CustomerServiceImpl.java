@@ -1,19 +1,18 @@
-package hib.bo;
+package hib.services;
 
 import hib.dao.CustomerDao;
 import hib.dao.RoleDao;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
-import hib.model.Booking;
 import hib.model.Customer;
 import hib.model.Role;
 import hib.restEntity.CreateCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,51 +22,55 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Repository
 public class CustomerServiceImpl implements CustomerService {
+
     private final APILogger<CustomerServiceImpl> logger = new APILoggerImpl<>(this);
+
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CustomerDao customerDao;
     @Autowired
-    private BookingService bookingService;
-    @Autowired
     private RoleDao roleDao;
 
     @Override
+    @Transactional(readOnly = true)
     public Customer findOneById(int id) {
-        logger.debug("Service: find customer by id: " + id);
-        return customerDao.findOneById(id);
+        logger.debug("Service: Find customer by id: " + id);
+        return customerDao.findOne(id);
     }
 
     @Override
+    @Transactional
     public Customer create(final CreateCustomer createCustomer) {
-        logger.info("Service: create new customer");
         Customer customer = new Customer(createCustomer);
         customer.setPassword(passwordEncoder.encode("1111"));
         Set<Role> roles = new HashSet<>();
         Role role = roleDao.findOneById(2);
         roles.add(role);
         customer.setRole(roles);
-        customerDao.create(customer);
-        return customerDao.find(customer);
+        logger.info("Service: Create new customer: " + customer.toString());
+        return customerDao.save(customer);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Customer> listAllUsers() {
-        return customerDao.listUsers();
+        logger.info("Service: Get all customers.");
+        return (List<Customer>) customerDao.findAll();
     }
 
     @Override
     @Transactional
     public void delete(final int id) {
-        Customer customer = customerDao.findOneById(id);
-        customerDao.delete(customer);
+        logger.info("Service: Delete customer by id: " + id);
+        customerDao.delete(id);
     }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        Customer user = customerDao.findByLogin(login);
+        Customer user = customerDao.findByName(login);
         if (user == null)
             throw new UsernameNotFoundException(String.format("User %s does not exist", login));
         return new CustomerDetails(user);

@@ -1,4 +1,4 @@
-package hib.bo;
+package hib.services;
 
 import hib.dao.AddressDao;
 import hib.dao.VenueDao;
