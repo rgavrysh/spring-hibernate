@@ -7,6 +7,7 @@ import hib.logging.APILoggerImpl;
 import hib.model.Customer;
 import hib.model.Role;
 import hib.restEntity.CreateCustomer;
+import hib.util.RoleNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -51,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = new Customer(createCustomer);
         customer.setPassword(passwordEncoder.encode(defaultPassword));
         Set<Role> roles = new HashSet<>();
-        Role role = roleDao.findOneById(2);
+        Role role = roleDao.findByName(RoleNames.ROLE_USER.name());
         roles.add(role);
         customer.setRole(roles);
         logger.info("Service: Create new customer: " + customer.toString());
