@@ -29,7 +29,7 @@ public class Venue implements Serializable {
     @ManyToOne(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "address_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    Address address;
+    private Address address;
     @Column(name = "start_work")
     private Time startWorkTime;
     @Column(name = "end_work")

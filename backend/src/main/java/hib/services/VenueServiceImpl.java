@@ -8,59 +8,61 @@ import hib.model.Address;
 import hib.model.Venue;
 import hib.restEntity.CreateVenue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service("venueService")
+@Repository
 public class VenueServiceImpl implements VenueService {
 
     private final APILogger<VenueServiceImpl> logger = new APILoggerImpl<>(this);
 
     @Autowired
     private VenueDao venueDao;
+
     @Autowired
-    private AddressDao addressDao;
+    private EntityManager entityManager;
 
     @Override
     public Venue findOneByName(final String name) {
         logger.info("Find venue by name: " + name);
-        return venueDao.findOneByName(name);
+        return venueDao.findByName(name);
     }
 
     @Override
     public Venue findOneById(final int id) {
         logger.info("Find venue by id: " + id);
-        return venueDao.findOneById(id);
+        return venueDao.findOne(id);
     }
 
     @Override
+    @Transactional
     public Venue create(CreateVenue createVenue) {
-        logger.info("Service: add new venue.");
         Address address = new Address(createVenue.getCreateAddress());
-        addressDao.create(address);
-        Address persistedAddress = addressDao.find(address);
-        logger.info("Address has been added to DB");
-        Venue venue = new Venue(createVenue.getName(), createVenue.getPhone(), persistedAddress, createVenue.getStartWork(),
+        logger.info("Service: Persist address first: " + address.toString());
+        entityManager.persist(address);
+        Venue venue = new Venue(createVenue.getName(), createVenue.getPhone(), address, createVenue.getStartWork(),
                 createVenue.getEndWork());
-        venueDao.create(venue);
-        return venueDao.find(venue);
+        logger.info("Service: Persist venue: " + venue.toString());
+        entityManager.persist(venue);
+        return venue;
     }
 
     @Override
     public void delete(final int id) {
-        logger.debug("Find venue with id: " + id + " before deleting");
-        Venue venue = findOneById(id);
-        if (venue == null) {
-            throw new NoResultException("Venue with id: " + id + " does not exist in DB");
-        }
-        logger.info("Service: delete venue with id: " + id);
-        venueDao.delete(venue);
+        logger.info("Service: Delete venue with id: " + id);
+        venueDao.delete(id);
     }
 
     @Override
     public List<Venue> listAllVenues() {
-        return venueDao.listVenues();
+        logger.info("Service: List all Venues.");
+        return (List<Venue>) venueDao.findAll();
     }
 }

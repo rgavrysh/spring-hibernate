@@ -24,6 +24,8 @@ public class BookingServiceImpl implements BookingService {
     private CustomerDao customerDao;
     @Autowired
     private BookingDao bookingDao;
+    @Autowired
+    private VenueService venueService;
 
     private final APILogger<BookingServiceImpl> logger = new APILoggerImpl<>(this);
 
@@ -47,7 +49,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking create(final BookTime bookTime, final int venueId) {
         logger.info("Book new time for venue by id: " + venueId);
-        Venue venue = venueDao.findOneById(venueId);
+        Venue venue = venueService.findOneById(venueId);
         Customer customer = customerDao.findOne(bookTime.getCustomerId());
         Booking booking = new Booking(venue, customer, bookTime.getStartDateTime(), bookTime.getEndDateTime());
         if (isTimeSlotAvailable(booking)) {
