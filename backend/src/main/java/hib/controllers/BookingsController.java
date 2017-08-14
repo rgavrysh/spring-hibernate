@@ -1,14 +1,14 @@
 package hib.controllers;
 
-import hib.services.BookingService;
-import hib.services.VenueService;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Booking;
 import hib.model.Customer;
-import hib.util.Response;
 import hib.model.Venue;
 import hib.restEntity.BookTime;
+import hib.services.BookingService;
+import hib.services.VenueService;
+import hib.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +27,8 @@ public class BookingsController {
     @Autowired
     private VenueService venueService;
 
-    @RequestMapping(value = "/bookings/venue", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    //    @RequestMapping(value = "/bookings/venue", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/bookings/venue")
     public
     @ResponseBody
     List<Booking> getAllBookingsOfVenueByName(@RequestParam(value = "name") String venueName) {
@@ -37,7 +38,8 @@ public class BookingsController {
         return bookings;
     }
 
-    @RequestMapping(value = "/me/bookings/venue/{venueId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/me/bookings/venue/{venueId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/me/bookings/venue/{venueId}")
     public
     @ResponseBody
     List<Booking> getBookingsOfVenueByUser(@AuthenticationPrincipal Customer customer, @PathVariable final int venueId) {
@@ -47,15 +49,17 @@ public class BookingsController {
     }
 
     //todo: change value to "/me/bookings"
-    @RequestMapping(value = "/me/bookings/venue", method = RequestMethod.GET)
+//    @RequestMapping(value = "/me/bookings/venue", method = RequestMethod.GET)
+    @GetMapping("/me/bookings/venue")
     public
     @ResponseBody
-    List<Booking> getBookingsByUser(@AuthenticationPrincipal Customer customer){
+    List<Booking> getBookingsByUser(@AuthenticationPrincipal Customer customer) {
         logger.info("Get all bookings by user " + customer.getName());
         return bookingService.findAllByCustomer(customer);
     }
 
-    @RequestMapping(value = "/bookings/venue/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/bookings/venue/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/bookings/venue/{id}")
     public
     @ResponseBody
     List<Booking> getAllBookingsOfVenueById(@PathVariable final int id) {
@@ -65,8 +69,9 @@ public class BookingsController {
         return bookings;
     }
 
-    @RequestMapping(value = "/bookings/venue/{venueId}/bookTime", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/bookings/venue/{venueId}/bookTime", method = RequestMethod.POST,
+//            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/bookings/venue/{venueId}/bookTime", consumes = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
     Booking bookTimeOnVenue(@AuthenticationPrincipal final Customer customer,
@@ -79,7 +84,8 @@ public class BookingsController {
         return booking;
     }
 
-    @RequestMapping(value = "/bookings/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @RequestMapping(value = "/bookings/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping("/bookings/{id}")
     public
     @ResponseBody
     Response deleteBookingById(@PathVariable final int id) {

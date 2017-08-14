@@ -22,7 +22,6 @@ public class VenueServiceImpl implements VenueService {
 
     @Autowired
     private VenueDao venueDao;
-
     @Autowired
     private EntityManager entityManager;
 
