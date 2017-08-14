@@ -8,6 +8,7 @@ import hib.model.Customer;
 import hib.model.Role;
 import hib.restEntity.CreateCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,6 +35,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private RoleDao roleDao;
 
+    @Value("${default.user.password}")
+    private String defaultPassword;
+
     @Override
     @Transactional(readOnly = true)
     public Customer findOneById(int id) {
@@ -45,7 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public Customer create(final CreateCustomer createCustomer) {
         Customer customer = new Customer(createCustomer);
-        customer.setPassword(passwordEncoder.encode("1111"));
+        customer.setPassword(passwordEncoder.encode(defaultPassword));
         Set<Role> roles = new HashSet<>();
         Role role = roleDao.findOneById(2);
         roles.add(role);

@@ -1,6 +1,8 @@
 package hib.model;
 
 import hib.restEntity.CreateAddress;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -84,5 +86,41 @@ public class Address implements Serializable {
 
     public void setPostalCode(Integer postalCode) {
         this.postalCode = postalCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Address:{\"id\": \"" + this.getId() +
+                "\", \"city\": \"" + this.getCity() +
+                "\", \"street\": \"" + this.getStreet() +
+                "\", \"building_number\": \"" + this.getBuildingNumber() +
+                "\", \"postal_code\": \"" + this.getPostalCode() + "\"}";
+
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .append(city)
+                .append(street)
+                .append(buildingNumber)
+                .append(postalCode)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Address) {
+            Address that = (Address) obj;
+            return new EqualsBuilder()
+                    .append(this.id, that.id)
+                    .append(this.city, that.city)
+                    .append(this.street, that.street)
+                    .append(this.buildingNumber, that.buildingNumber)
+                    .append(this.postalCode, that.postalCode)
+                    .isEquals();
+        }
+        return false;
     }
 }

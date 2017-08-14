@@ -1,4 +1,4 @@
-package hib.model;
+package hib.util;
 
 import java.io.Serializable;
 

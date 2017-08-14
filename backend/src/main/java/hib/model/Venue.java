@@ -1,5 +1,7 @@
 package hib.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -90,5 +92,33 @@ public class Venue implements Serializable {
 
     public void setEndWorkTime(Time endWorkTime) {
         this.endWorkTime = endWorkTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Venue:{\"id\": \"" + this.getId() +
+                "\", \"name\": \"" + this.getName() + "\"}";
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .append(name)
+                .append(phone)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Venue) {
+            Venue that = (Venue) obj;
+            return new EqualsBuilder()
+                    .append(this.id, that.id)
+                    .append(this.name, that.name)
+                    .append(this.phone, that.phone)
+                    .isEquals();
+        }
+        return false;
     }
 }

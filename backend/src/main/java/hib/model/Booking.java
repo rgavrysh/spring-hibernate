@@ -1,8 +1,8 @@
 package hib.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,13 +22,12 @@ public class Booking implements Serializable {
 
     @JoinColumn(name = "venue_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    Venue venue;
+    private Venue venue;
 
     @JoinColumn(name = "customer_id")
     @ManyToOne
-            @JsonBackReference
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-    Customer customer;
+    @JsonBackReference
+    private Customer customer;
 
     @Column(name = "start_date_time")
     private Date startDateTime;
@@ -92,5 +91,38 @@ public class Booking implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking:{\"id\": " + this.getId() +
+                "\", \"venue\": " + this.getVenue().toString() +
+                "\", \"customer\": " + this.getCustomer().toString() +
+                "\", \"start_date_time\": " + this.getStartDateTime() +
+                "\", \"end_date_time\": " + this.getEndDateTime() + "\"}";
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .append(startDateTime)
+                .append(endDateTime)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Booking) {
+            Booking that = (Booking) obj;
+            return new EqualsBuilder()
+                    .append(this.id, that.id)
+                    .append(this.startDateTime, that.startDateTime)
+                    .append(this.endDateTime, that.endDateTime)
+                    .append(this.customer, that.customer)
+                    .append(this.venue, that.venue)
+                    .isEquals();
+        }
+        return false;
     }
 }

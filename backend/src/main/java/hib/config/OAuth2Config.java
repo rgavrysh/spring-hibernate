@@ -55,12 +55,9 @@ public class OAuth2Config {
         public void configure(HttpSecurity http) throws Exception {
             http
                     .csrf().disable()
-                    .httpBasic()
-                    .and()
                     .authorizeRequests()
-                    .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .antMatchers("/index.html", "/favicon.ico").permitAll()
+                    .antMatchers("/index.html", "/static/**").permitAll()
                     .anyRequest().authenticated();
         }
     }

@@ -1,6 +1,6 @@
 package hib.controllers;
 
-import hib.model.Response;
+import hib.util.Response;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;

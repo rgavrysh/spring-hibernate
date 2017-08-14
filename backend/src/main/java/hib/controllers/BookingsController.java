@@ -6,7 +6,7 @@ import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
 import hib.model.Booking;
 import hib.model.Customer;
-import hib.model.Response;
+import hib.util.Response;
 import hib.model.Venue;
 import hib.restEntity.BookTime;
 import org.springframework.beans.factory.annotation.Autowired;

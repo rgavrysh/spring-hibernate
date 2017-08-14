@@ -32,13 +32,7 @@ public class UserToRoleId implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return ((obj instanceof UserToRoleId) && customerId == ((UserToRoleId) obj).getCustomerId() &&
-                roleId == ((UserToRoleId) obj).getRoleId());
-    }
-
-    @Override
-    public int hashCode() {
-        return customerId.hashCode() + roleId;
+    public String toString() {
+        return "User2Role:{\"customer_id\": \"" + this.getCustomerId() + "\", \"role_id\": \"" + this.getRoleId() + "\"}";
     }
 }

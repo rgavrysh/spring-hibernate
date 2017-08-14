@@ -3,7 +3,7 @@ package hib.controllers;
 import hib.services.VenueService;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
-import hib.model.Response;
+import hib.util.Response;
 import hib.model.Venue;
 import hib.restEntity.CreateVenue;
 import org.springframework.beans.factory.annotation.Autowired;
