@@ -1,6 +1,5 @@
 package hib.services;
 
-import hib.dao.AddressDao;
 import hib.dao.VenueDao;
 import hib.logging.APILogger;
 import hib.logging.APILoggerImpl;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service("venueService")

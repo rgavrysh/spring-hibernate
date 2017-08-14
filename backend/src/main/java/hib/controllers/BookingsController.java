@@ -42,7 +42,7 @@ public class BookingsController {
     @ResponseBody
     List<Booking> getBookingsOfVenueByUser(@AuthenticationPrincipal Customer customer, @PathVariable final int venueId) {
         logger.info("Get booking of venue requested by user " + customer.getName());
-        List<Booking> bookings = bookingService.findAllByVenueAndCustomer(venueId, customer.getId().intValue());
+        List<Booking> bookings = bookingService.findAllByVenueAndCustomer(venueId, customer);
         return bookings;
     }
 

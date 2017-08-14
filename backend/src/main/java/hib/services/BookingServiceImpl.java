@@ -10,24 +10,23 @@ import hib.model.Customer;
 import hib.model.Venue;
 import hib.restEntity.BookTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service("bookingService")
+@Repository
 public class BookingServiceImpl implements BookingService {
+    private final APILogger<BookingServiceImpl> logger = new APILoggerImpl<>(this);
 
-    @Autowired
-    private VenueDao venueDao;
-    @Autowired
-    private CustomerDao customerDao;
     @Autowired
     private BookingDao bookingDao;
     @Autowired
     private VenueService venueService;
-
-    private final APILogger<BookingServiceImpl> logger = new APILoggerImpl<>(this);
+    @Autowired
+    private CustomerService customerService;
 
     @Override
     public List<Booking> findAllByVenue(Venue venue) {
@@ -36,9 +35,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> findAllByVenueAndCustomer(int venueId, int customerId) {
+    public List<Booking> findAllByVenueAndCustomer(int venueId, Customer customerId) {
         logger.info("Find all bookings by venue: " + venueId + " and customer: " + customerId);
-        return bookingDao.findAllByVenueAndCustomer(venueId, customerId);
+        return bookingDao.findAllByVenueAndCustomer(venueService.findOneById(venueId), customerId);
     }
 
     @Override
@@ -50,12 +49,12 @@ public class BookingServiceImpl implements BookingService {
     public Booking create(final BookTime bookTime, final int venueId) {
         logger.info("Book new time for venue by id: " + venueId);
         Venue venue = venueService.findOneById(venueId);
-        Customer customer = customerDao.findOne(bookTime.getCustomerId());
+        Customer customer = customerService.findOneById(bookTime.getCustomerId());
         Booking booking = new Booking(venue, customer, bookTime.getStartDateTime(), bookTime.getEndDateTime());
         if (isTimeSlotAvailable(booking)) {
-            bookingDao.create(booking);
-            return bookingDao.find(booking);
+            return bookingDao.save(booking);
         } else {
+            logger.info("Time slot is not available");
             throw new NoResultException("Time slot is not available.");
         }
     }
@@ -66,15 +65,12 @@ public class BookingServiceImpl implements BookingService {
         bookingDao.delete(id);
     }
 
-    @Override
-    public Booking findById(final int id) {
-        logger.info("Service: Find booking by id: " + id);
-        return bookingDao.findOneById(id);
-    }
-
     private boolean isTimeSlotAvailable(Booking booking) {
-        logger.info("Find booking for specified time range.");
-        List<Booking> bookings = bookingDao.findAllByTimeRange(booking);
+        logger.info("Find booking for specified time range. Start date:" + booking.getStartDateTime() +
+                ",\tEnd Date: " + booking.getEndDateTime());
+        List<Booking> bookings = bookingDao.findAllByTimeRange(booking.getVenue(), booking.getStartDateTime(),
+                booking.getEndDateTime());
+        logger.info("Found: " + booking.toString());
         return bookings.isEmpty();
     }
 }
