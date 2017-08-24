@@ -49,7 +49,6 @@ public class DataSourceConfig {
 
     private final String persistenceUnitName = "backend-api";
 
-    //    databaseUrl = "jdbc:postgresql://ec2-54-195-240-107.eu-west-1.compute.amazonaws.com:5432/d5a14h34a2t2m9?sslmode=require&user=pcxfwcgwmgdlkr&password=gLqxKDcO8trJKWuFsk_2cLahGN";
     @Bean
     public DataSource dataSource() {
         final String databaseUrl = "jdbc:postgresql://" + ipAddress + ":" + port + "/" + database +

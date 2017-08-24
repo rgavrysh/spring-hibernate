@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.home.util.OAuthToken;
 import hib.Starter;
 import hib.config.Config;
-import org.hamcrest.Matchers;
+import hib.restEntity.CreateCustomer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +18,7 @@ import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfig
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -36,6 +37,8 @@ public class CustomerControllerTest {
     private final String adminUsername = "admin";
     private final String adminPassword = "qwe123";
     private OAuthToken oAuthToken;
+    private HttpHeaders commonHttpHeaders = new HttpHeaders();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
     public void getAccessToke() throws Exception {
@@ -50,17 +53,56 @@ public class CustomerControllerTest {
                 .content("username=" + adminUsername + "&password=" + adminPassword + "&grant_type=password"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn().getResponse();
-        ObjectMapper objectMapper = new ObjectMapper();
         oAuthToken = objectMapper.readValue(response.getContentAsString(), OAuthToken.class);
+        commonHttpHeaders.add("Authorization", oAuthToken.getTokenType() + " " + oAuthToken.getAccessToke());
     }
 
     @Test
     public void givenToke_whileGetUserInfo_thenRightUserGetting() throws Exception {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", oAuthToken.getTokenType() + " " + oAuthToken.getAccessToke());
-        mockMvc.perform(MockMvcRequestBuilders.get("/me").headers(httpHeaders))
+        mockMvc.perform(MockMvcRequestBuilders.get("/me").headers(commonHttpHeaders))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(Matchers.containsString("admin")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("admin"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("admin@admin.com"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.role[0].name").value("ROLE_ADMIN"));
+    }
 
+    @Test
+    public void givenUserId_whileGetUserById_thenRightUser() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/customer/{id}", 1).headers(commonHttpHeaders))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("admin"));
+    }
+
+    @Test
+    public void givenCustomer_whileAddingNewUser_thenPersisted() throws Exception {
+        final CreateCustomer createCustomer =
+                new CreateCustomer(this.getClass().getSimpleName(), 911, "user@user.com");
+        String json = objectMapper.writeValueAsString(createCustomer);
+        mockMvc.perform(MockMvcRequestBuilders.post("/customer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json).headers(commonHttpHeaders))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(this.getClass().getSimpleName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.phone").value(911))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("user@user.com"))
+                .andReturn();
+    }
+
+    @Test
+    public void givenToken_whileGettingListOfUsers_thenListReturned() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers").headers(commonHttpHeaders))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty());
+    }
+
+    @Test
+    public void givenCustomer_whileDeletingUser_thenRemoved() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/customer/{id}/delete", 2)
+                .headers(commonHttpHeaders))
+                .andExpect(MockMvcResultMatchers.status().isAccepted());
     }
 }

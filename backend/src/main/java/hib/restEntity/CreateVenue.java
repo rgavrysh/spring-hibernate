@@ -1,27 +1,34 @@
 package hib.restEntity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class CreateVenue {
+@JsonPropertyOrder(value = {"name", "address", "phone", "startWork", "endWork"})
+public class CreateVenue implements Serializable {
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+    private static final long serialVersionUID = 1L;
 
     private String name;
-    private CreateAddress createAddress;
+    private CreateAddress address;
     private Integer phone;
     private Time startWork;
     private Time endWork;
 
+    public CreateVenue() {
+    }
+
     public CreateVenue(@JsonProperty(value = "name") String name,
-                       @JsonProperty(value = "address_id") CreateAddress createAddress,
+                       @JsonProperty(value = "address") CreateAddress address,
                        @JsonProperty(value = "phone") Integer phone,
-                       @JsonProperty(value = "start_work") String startWork,
-                       @JsonProperty(value = "end_work") String endWork) throws ParseException {
+                       @JsonProperty(value = "startWork") String startWork,
+                       @JsonProperty(value = "endWork") String endWork) throws ParseException {
         this.name = name;
-        this.createAddress = createAddress;
+        this.address = address;
         this.phone = phone;
         this.startWork = new Time(timeFormat.parse(startWork).getTime());
         this.endWork = new Time(timeFormat.parse(endWork).getTime());
@@ -31,8 +38,8 @@ public class CreateVenue {
         return name;
     }
 
-    public CreateAddress getCreateAddress() {
-        return createAddress;
+    public CreateAddress getAddress() {
+        return address;
     }
 
     public Integer getPhone() {

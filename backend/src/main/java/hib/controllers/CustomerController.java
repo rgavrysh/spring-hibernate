@@ -21,9 +21,8 @@ public class CustomerController {
     private CustomerService customerService;
 
     @RequestMapping(value = "/me", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public
     @ResponseBody
-    Customer getMe(@AuthenticationPrincipal Customer me) {
+    public Customer getMe(@AuthenticationPrincipal Customer me) {
         logger.info(me.toString());
         return me;
     }

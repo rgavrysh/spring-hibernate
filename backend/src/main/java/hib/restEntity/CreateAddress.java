@@ -2,11 +2,18 @@ package hib.restEntity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CreateAddress {
+import java.io.Serializable;
+
+public class CreateAddress implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String city;
     private String street;
     private Integer buildingNumber;
     private Integer postalCode;
+
+    public CreateAddress() {
+    }
 
     public CreateAddress(@JsonProperty(value = "city") String city,
                          @JsonProperty(value = "street") String street,

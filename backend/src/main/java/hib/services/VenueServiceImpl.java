@@ -40,7 +40,7 @@ public class VenueServiceImpl implements VenueService {
     @Override
     @Transactional
     public Venue create(CreateVenue createVenue) {
-        Address address = new Address(createVenue.getCreateAddress());
+        Address address = new Address(createVenue.getAddress());
         logger.info("Service: Persist address first: " + address.toString());
         entityManager.persist(address);
         Venue venue = new Venue(createVenue.getName(), createVenue.getPhone(), address, createVenue.getStartWork(),
