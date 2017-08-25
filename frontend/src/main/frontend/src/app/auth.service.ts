@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 import { OauthToken } from './oauth-token';
+import { APP_SETTINGS, IAppSettings } from './app.settings';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -9,7 +10,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AuthService {
 
-  constructor(private http: Http) { }
+  constructor(@Inject(APP_SETTINGS) private config: IAppSettings, private http: Http) { }
 
   oauthToken: OauthToken;
   token = '';
@@ -24,8 +25,9 @@ export class AuthService {
     body.set('grant_type', 'password');
     var headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    headers.append('Authorization', 'Basic cmVzdDpxd2UxMjM=');
-    return this.http.post('https://localhost:8443/oauth/token', body.toString(), { headers: headers })
+    headers.append('Authorization', 'Basic ' + btoa(this.config.securityClientName + ':' + this.config.securityClientSecret));
+    return this.http.post(this.config.apiProtocol + '://' + this.config.apiHost + ':' + this.config.apiPort + '/oauth/token',
+      body.toString(), { headers: headers })
       .map((response: Response) => {
         this.oauthToken = response.json();
         if (this.oauthToken.access_token){

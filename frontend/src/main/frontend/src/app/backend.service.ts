@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { AuthService } from './auth.service';
+import { APP_SETTINGS, IAppSettings } from './app.settings';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -13,15 +14,18 @@ export class BackendService {
   errorMessage: string;
   private authentication: {};
   private user: {};
+  private apiEndpoint: string;
 
-  constructor(private http: Http, private authService: AuthService) { }
+  constructor(private http: Http, private authService: AuthService, @Inject(APP_SETTINGS) private config: IAppSettings) {
+    this.apiEndpoint = this.config.apiProtocol + '://' + this.config.apiHost + ':' + this.config.apiPort;
+  }
 
   getUsers(): Observable<User[]> {
     var headers = new Headers();
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('https://localhost:8443/customers', { headers: headers })
+    return this.http.get(this.apiEndpoint + '/customers', { headers: headers })
                     .map(response => response.json());
   }
 
@@ -30,7 +34,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.delete('https://localhost:8443/customer/'+userId+'/delete', { headers: headers })
+    return this.http.delete(this.apiEndpoint + '/customer/'+userId+'/delete', { headers: headers })
       .map((response: Response) => {
       	if (response.ok){
       	  return true;
@@ -43,7 +47,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.delete('https://localhost:8443/bookings/'+bookingId, { headers: headers })
+    return this.http.delete(this.apiEndpoint + '/bookings/'+bookingId, { headers: headers })
       .map((response: Response) => {
         if (response.ok){
           return true;
@@ -57,7 +61,7 @@ export class BackendService {
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
     var body = JSON.stringify(user);
-    return this.http.post('https://localhost:8443/customer', body, { headers: headers })
+    return this.http.post(this.apiEndpoint + '/customer', body, { headers: headers })
       .map((response: Response) => {
         if (response.ok){
           return true;
@@ -70,7 +74,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('https://localhost:8443/venues', { headers: headers })
+    return this.http.get(this.apiEndpoint + '/venues', { headers: headers })
                     .map(response => response.json());
   }
 
@@ -79,7 +83,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('https://localhost:8443/me/bookings/venue', {headers: headers})
+    return this.http.get(this.apiEndpoint + '/me/bookings/venue', {headers: headers})
       .map(response => response.json());
   }
 
@@ -88,7 +92,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.post('https://localhost:8443/bookings/venue/'+id+'/bookTime', body, {headers: headers})
+    return this.http.post(this.apiEndpoint + '/bookings/venue/'+id+'/bookTime', body, {headers: headers})
       .map((response: Response) => {
         if (response.ok){
           return true;
@@ -101,7 +105,7 @@ export class BackendService {
     var token = 'Bearer ' + this.authService.token;
     headers.append('Authorization', token);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('https://localhost:8443/me', {headers: headers})
+    return this.http.get(this.apiEndpoint + '/me', {headers: headers})
       .map(response => response.json());
   }
 

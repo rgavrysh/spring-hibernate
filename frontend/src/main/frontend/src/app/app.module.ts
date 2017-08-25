@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { BackendService } from './backend.service';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
+import { APP_SETTINGS, AppSettings } from './app.settings';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [ AuthGuard ] },
@@ -44,7 +45,7 @@ const appRoutes: Routes = [
     HttpModule,
     FormsModule
   ],
-  providers: [ AuthService, BackendService, AuthGuard ],
+  providers: [ AuthService, BackendService, AuthGuard, {provide: APP_SETTINGS, useValue: AppSettings} ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

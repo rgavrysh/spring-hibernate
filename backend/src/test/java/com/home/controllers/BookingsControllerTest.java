@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.home.util.OAuthToken;
 import hib.Starter;
 import hib.model.Venue;
+import hib.restEntity.BookTime;
 import hib.restEntity.CreateAddress;
 import hib.restEntity.CreateVenue;
 import org.junit.Before;
@@ -23,6 +24,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.DataInput;
+import java.io.File;
 import java.util.Date;
 
 @RunWith(SpringRunner.class)
