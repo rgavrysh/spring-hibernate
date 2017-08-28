@@ -23,6 +23,7 @@ const appRoutes: Routes = [
   { path: 'me', component: ProfileComponent, canActivate: [ AuthGuard ] },
   { path: 'mybookings', component: MyBookingsComponent, canActivate: [ AuthGuard ] },
   { path: 'login', component: LoginComponent },
+  { path: 'logout', redirectTo: '/login' },
   { path: 'admin', component: AdminComponent, canActivate: [ AuthGuard ]  },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }

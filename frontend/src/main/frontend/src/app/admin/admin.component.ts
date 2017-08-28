@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BackendService } from '../backend.service';
 import { AuthGuard } from '../auth.guard';
 import { User } from '../user';
+declare var componentHandler: any;
 
 @Component({
   selector: 'app-admin',
@@ -14,13 +15,14 @@ export class AdminComponent implements OnInit {
   users: User[];
   response: {};
   isOpen = 'none';
-  newUser: User = new User('', 123456, '');
+  newUser: User = new User('', '');
 
   constructor( private backendService: BackendService ) { }
 
   ngOnInit() {
     this.getUsers();
     console.log(this.users);
+    componentHandler.upgradeDom();
   }
 
   getUsers() {
@@ -57,6 +59,7 @@ export class AdminComponent implements OnInit {
           if(res){
             this.getUsers();
             this.closeModal();
+            this.newUser = new User('', '');
           }
         },
         error => this.errorMessage = <any>error);
