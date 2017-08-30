@@ -31,6 +31,7 @@ export class AuthService {
       .map((response: Response) => {
         this.oauthToken = response.json();
         if (this.oauthToken.access_token){
+          window.localStorage.setItem('auth_key', this.oauthToken.access_token);
           this.loggedIn = true;
           this.token = this.oauthToken.access_token;
           return true;
@@ -40,6 +41,12 @@ export class AuthService {
 
   logout(): void {
   	this.loggedIn = false;
+  	window.localStorage.clear();
+  }
+
+  getToken(): string {
+    this.token = window.localStorage.getItem('auth_key');
+    return this.token;
   }
 
 }

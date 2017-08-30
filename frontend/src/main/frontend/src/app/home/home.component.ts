@@ -12,8 +12,6 @@ export class HomeComponent implements OnInit {
   token: string;
 
   ngOnInit() {
-    if (this.authService.loggedIn){
-      this.token = this.authService.token;
-    }
+    this.token = this.authService.getToken();
   }
 }

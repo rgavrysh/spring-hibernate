@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BackendService } from '../backend.service';
 import { AuthGuard } from '../auth.guard';
 import { User } from '../user';
@@ -17,7 +18,7 @@ export class AdminComponent implements OnInit {
   isOpen = 'none';
   newUser: User = new User('', '');
 
-  constructor( private backendService: BackendService ) { }
+  constructor( private backendService: BackendService, private router: Router) { }
 
   ngOnInit() {
     this.getUsers();
@@ -29,7 +30,13 @@ export class AdminComponent implements OnInit {
     this.backendService.getUsers()
       .subscribe(
         res => this.users = res,
-        error =>  this.errorMessage = <any>error);
+        error =>  {
+          debugger;
+          if(error.status == 401){
+            this.router.navigate(['/login']);
+          }
+          this.errorMessage = <any>error
+        });
   }
 
   deleteUsers() {

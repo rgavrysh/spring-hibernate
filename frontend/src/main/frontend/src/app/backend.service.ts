@@ -15,15 +15,16 @@ export class BackendService {
   private authentication: {};
   private user: {};
   private apiEndpoint: string;
+  private bearerToken: string;
 
   constructor(private http: Http, private authService: AuthService, @Inject(APP_SETTINGS) private config: IAppSettings) {
     this.apiEndpoint = this.config.apiProtocol + '://' + this.config.apiHost + ':' + this.config.apiPort;
+    this.bearerToken = 'Bearer ' + this.authService.getToken();
   }
 
   getUsers(): Observable<User[]> {
     var headers = new Headers();
-    var token = 'Bearer ' + this.authService.token;
-    headers.append('Authorization', token);
+    headers.append('Authorization', this.bearerToken);
     headers.append('Content-Type', 'application/json');
     return this.http.get(this.apiEndpoint + '/customers', { headers: headers })
                     .map(response => response.json());
@@ -31,8 +32,7 @@ export class BackendService {
 
   deleteUser(userId: number){
     var headers = new Headers();
-    var token = 'Bearer ' + this.authService.token;
-    headers.append('Authorization', token);
+    headers.append('Authorization', this.bearerToken);
     headers.append('Content-Type', 'application/json');
     return this.http.delete(this.apiEndpoint + '/customer/'+userId+'/delete', { headers: headers })
       .map((response: Response) => {
@@ -44,8 +44,7 @@ export class BackendService {
 
   deleteBooking(bookingId: number){
     var headers = new Headers();
-    var token = 'Bearer ' + this.authService.token;
-    headers.append('Authorization', token);
+    headers.append('Authorization', this.bearerToken);
     headers.append('Content-Type', 'application/json');
     return this.http.delete(this.apiEndpoint + '/bookings/'+bookingId, { headers: headers })
       .map((response: Response) => {
@@ -57,8 +56,7 @@ export class BackendService {
 
   addUser(user: User) {
     var headers = new Headers();
-    var token = 'Bearer ' + this.authService.token;
-    headers.append('Authorization', token);
+    headers.append('Authorization', this.bearerToken);
     headers.append('Content-Type', 'application/json');
     var body = JSON.stringify(user);
     return this.http.post(this.apiEndpoint + '/customer', body, { headers: headers })
@@ -71,8 +69,7 @@ export class BackendService {
 
   getVenues() {
     var headers = new Headers();
-    var token = 'Bearer ' + this.authService.token;
-    headers.append('Authorization', token);
+    headers.append('Authorization', this.bearerToken);
     headers.append('Content-Type', 'application/json');
     return this.http.get(this.apiEndpoint + '/venues', { headers: headers })
                     .map(response => response.json());
@@ -80,8 +77,7 @@ export class BackendService {
 
   getBookings() {
     var headers = new Headers();
-    var token = 'Bearer ' + this.authService.token;
-    headers.append('Authorization', token);
+    headers.append('Authorization', this.bearerToken);
     headers.append('Content-Type', 'application/json');
     return this.http.get(this.apiEndpoint + '/me/bookings/venue', {headers: headers})
       .map(response => response.json());
@@ -89,8 +85,7 @@ export class BackendService {
 
   bookVenue(id: number, body: Object){
     var headers = new Headers();
-    var token = 'Bearer ' + this.authService.token;
-    headers.append('Authorization', token);
+    headers.append('Authorization', this.bearerToken);
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.apiEndpoint + '/bookings/venue/'+id+'/bookTime', body, {headers: headers})
       .map((response: Response) => {
@@ -102,8 +97,7 @@ export class BackendService {
 
   aboutMe() {
     var headers = new Headers();
-    var token = 'Bearer ' + this.authService.token;
-    headers.append('Authorization', token);
+    headers.append('Authorization', this.bearerToken);
     headers.append('Content-Type', 'application/json');
     return this.http.get(this.apiEndpoint + '/me', {headers: headers})
       .map(response => response.json());
