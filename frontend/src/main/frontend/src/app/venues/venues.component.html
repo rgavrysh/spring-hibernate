@@ -1,44 +1,50 @@
 <div class="mdl-grid">
-	<div *ngFor="let item of venues" class="mdl-cell mdl-cell--4-col">
-	  <div class="demo-card-square mdl-card mdl-shadow--2dp">
-	      <div class="mdl-card__title mdl-card--expand">
-	        <h2 class="mdl-card__title-text" style="color: black">{{item.name}}</h2>
-	      </div>
+  <div *ngFor="let item of venues" class="mdl-cell mdl-cell--4-col">
+    <div class="demo-card-square mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title mdl-card--expand">
+        <h2 class="mdl-card__title-text" style="color: black">{{item.name}}</h2>
+      </div>
       <div class="mdl-card__supporting-text">{{item.address.street}}
       </div>
       <div class="mdl-card__actions mdl-card--border">
-      <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" (click)="displayModal(item)">
-      Book this place
-      </a>
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" (click)="displayModal(item)">
+          Book this place
+        </a>
+      </div>
     </div>
-  </div>
   </div>
 </div>
 <div id="mdl-custom-modal" class="modal" [style.display]="isOpen">
-    <div class="modal-content mdl-card mdl-shadow--2dp">
-        <div class="mdl-card__title mdl-card--expand">
-            <form>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="mdl-start-time" name="mdl-start-time" [(ngModel)]=bookStartTime >
-                    <label class="mdl-textfield__label" for="mdl-start-time">yyyy-MM-dd HH:mm:ss</label>
-                    <span class="mdl-textfield__error">Provide time as in example!</span>
-                </div>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="mdl-end-time" name="mdl-end-time" [(ngModel)]=bookEndTime >
-                    <label class="mdl-textfield__label" for="mdl-end-time">yyyy-MM-dd HH:mm:ss</label>
-                    <span class="mdl-textfield__error">Provide time as in example!</span>
-                </div>                
-            </form>
+  <div class="modal-content mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-card--expand">
+      <form>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="mdl-start-time" name="mdl-start-time"
+                 [(ngModel)]=bookStartTime>
+          <label class="mdl-textfield__label" for="mdl-start-time">yyyy-MM-dd HH:mm:ss</label>
+          <span class="mdl-textfield__error">Provide time as in example!</span>
         </div>
-        <div class="mdl-card__actions mdl-card--border">
-            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" (click)="submitTime()" >
-                Submit
-            </a>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="mdl-end-time" name="mdl-end-time" [(ngModel)]=bookEndTime>
+          <label class="mdl-textfield__label" for="mdl-end-time">yyyy-MM-dd HH:mm:ss</label>
+          <span class="mdl-textfield__error">Provide time as in example!</span>
         </div>
-        <div class="mdl-card__menu">
-            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-custom-close" (click)="closeModal()">
-              <span class="material-icons">close</span>
-            </button>
-        </div>
+      </form>
     </div>
+    <div class="mdl-card__actions mdl-card--border">
+      <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" (click)="submitTime()">
+        Submit
+      </a>
+    </div>
+    <div class="mdl-card__menu">
+      <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-custom-close"
+              (click)="closeModal()">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div id="snackbar-message" class="mdl-js-snackbar mdl-snackbar">
+  <div class="mdl-snackbar__text"></div>
+  <button class="mdl-snackbar__action" type="button"></button>
 </div>

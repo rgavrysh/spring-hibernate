@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BackendService } from '../backend.service';
 import { Venue } from '../venue';
+declare var componentHandler: any;
 
 @Component({
   selector: 'app-venues',
@@ -10,7 +11,7 @@ import { Venue } from '../venue';
 export class VenuesComponent implements OnInit {
 
   constructor(private backendService: BackendService) { }
-  
+
   venues: Venue[];
   /* = [new Venue(1, 'grass', 123, '09:30', '22:00'), new Venue(2, 'AG', 456, '08:00', '23:00')];*/
   errorMsg: string;
@@ -23,6 +24,7 @@ export class VenuesComponent implements OnInit {
 
   ngOnInit() {
     this.getVenues();
+    componentHandler.upgradeDom();
   }
 
   getVenues() {
@@ -46,16 +48,23 @@ export class VenuesComponent implements OnInit {
   submitTime(){
     console.log(this.bookStartTime);
     console.log(this.bookEndTime);
-    let body = {'start_date_time': this.bookStartTime, 
+    let body = {'start_date_time': this.bookStartTime,
     			'end_date_time': this.bookEndTime};
     this.backendService.bookVenue(this.currentVenueId, body)
       .subscribe(
         res => {
           if (res){
             this.closeModal();
+            var data = {message: 'Successfully booked.', timeout: 3000};
+            var snackbar = document.querySelector('#snackbar-message');
+            (snackbar as any).MaterialSnackbar.showSnackbar(data);
           }
         },
-        err => this.errorMsg = <any>err);
+        err => {
+          this.errorMsg = err.json().message;
+          var data = {message: 'Time slot is not available.', timeout: 4000};
+          var snackbar = document.querySelector('#snackbar-message');
+          (snackbar as any).MaterialSnackbar.showSnackbar(data);
+        });
   }
-
 }
