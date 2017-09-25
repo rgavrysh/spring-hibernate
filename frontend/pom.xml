@@ -9,10 +9,9 @@
     <version>1.0-SNAPSHOT</version>
     <name>frontend</name>
     <description>The Pitch App. frontend project</description>
-
     <parent>
-        <groupId>hib</groupId>
-        <artifactId>hib2</artifactId>
+        <groupId>com.home.app</groupId>
+        <artifactId>pitch.app</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
